@@ -1,0 +1,121 @@
+﻿@model IEnumerable<IdealMall.Entities.ShoppingList>
+@{
+    
+    Layout = "~/Areas/Mobile/Views/Shared/_LayoutShoppingList.cshtml";
+
+    List<IdealMall.Entities.CashandCarryShop> shopDetails = (List<IdealMall.Entities.CashandCarryShop>)(ViewData["CashAndCarryShops"]);
+
+    shopDetails = shopDetails.Where(m => Model.Where(m1 => m1.ShopId == m.ID).Count() > 0).ToList();
+    
+    
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+<style>
+    *
+    {
+        font-size:small !important;
+    }
+    tr td
+    {   
+        font-size:x-small !important;
+    }
+    
+</style>
+<script language="javascript">
+function ClearShoppingList()
+{
+var result = window.confirm("Are you sure to clear the Shopping list?");
+if (result)
+{
+    $.ajax({
+    cache: false,
+    async: false,
+    type: "POST",
+    url: "@Url.Action("ClearShoppingList", "Trade")",
+    data: {id: "1" },
+    success: function (data) {
+            if (data == "true")
+            {
+                window.location.href = window.location.href;
+            }
+            else
+            {   
+                alert("Error deleting Shopping List");
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            alert("Error deleting Shopping List");
+          }
+      });
+   }
+
+}
+</script>   
+</head>
+<body>
+
+<div>
+   
+
+   <table width="100%" >
+    
+         <tr style="background-color:Green;font-size:medium !important;color: White;">
+            <td width="86%" ><b>My Shopping List</b></td>
+            <td width="14%" align="left"><b>£@Model.Sum(m=>m.Total)</b></td>
+         </tr>
+    </table>
+</div>  
+        
+    @for (int ShopCnt = 0; ShopCnt < shopDetails.Count; ShopCnt++)
+    {
+        List<IdealMall.Entities.ShoppingList> products = Model.Where(m => m.ShopId == shopDetails[ShopCnt].ID).ToList();
+    
+        <div  width="100%" data-role="collapsible" data-collapsed="true">
+            <h1>
+                <table width="100%" >
+                    <tr>
+                        <td width="86.5%"><img src="@Url.Content(shopDetails[ShopCnt].ImgUrl)" height=""/> <b style="position:relative;top:auto">@(shopDetails[ShopCnt].Name)</b></td>
+                        <td width="13.5%" align="left"><b>£@products.Sum(m => m.Total)</b></td>
+                    </tr>
+                </table>
+            </h1>
+            <p>
+                <table width="100%">
+                    @for (int kartCnt = 0; kartCnt < products.Count(); kartCnt++)
+                    {
+                      <tr>
+                            <td width="46%" style=" text-align:left; font-weight:bold;">@products[kartCnt].Product
+                            </td>
+                            <td width="13.5%"><u>@(products[kartCnt].Qty)(pcs)</u>
+                            </td>
+                            <td width="13.5%">| £@products[kartCnt].OfferRate
+                            </td>
+                            <td width="13.5%">@products[kartCnt].VAT %
+                            </td>
+                            <td width="13.5%">£@products[kartCnt].Total
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </p>
+        </div>
+    }
+    <div>
+<table style=" width:100%">
+  <tr  align="left">
+
+            <td align="right" style=" width:100%">
+            <a class="mobrestsStatusOpen" title="Clear My Shopping List" onclick="ClearShoppingList()" style=" background-color:rgb(193,0,0); color:White;  font-size:x-small ; width:200px; font-weight:normal "  >Clear My Shopping List
+            </a>
+            </td>            
+        </tr>
+</table>
+</div>
+  
+</body>
+</html>

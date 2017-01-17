@@ -1,0 +1,60 @@
+﻿@model IdealMall.Models.ShoppingListTrade
+@{
+    Layout = null;
+}
+@{
+    
+        <ul class="retailermenu">
+
+            <li>
+                <h1 class="tradeshopall">All</h1>
+                <input type="hidden" value="0" /></li>
+
+            @for (int i = 0; i < Model.CashandCarry.Count; i++)
+            {
+                if (ViewBag.cc == Model.CashandCarry[i].ID)
+                {
+                <li>
+                    <a href="javascript:void(0);">
+                        <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)" border="0" alt="company1" /></a> <span>@Model.CashandCarry[i].Name</span>
+                    <input type="hidden" value="@Model.CashandCarry[i].ID" />
+                </li>
+                }
+                else
+                {
+                <li>
+                    <a href="javascript:void(0);">
+                        <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)" border="0" alt="company1" /></a> <span>@Model.CashandCarry[i].Name</span>
+                    <input type="hidden" value="@Model.CashandCarry[i].ID" />
+                </li>
+               
+                }
+
+            }
+        </ul>
+        
+    
+}
+<script type="text/javascript">
+
+    $(".retailermenu li").click(function () {
+
+        $("#loading").css("display", "block");
+        $("#searchresultShopping").css({ opacity: 0.3 });
+
+        $.ajax({
+            async: false,
+            cache: false,
+            type: "GET",
+            url: "/TradeShopping/Index/" + $(this).find("input").val(),
+            data: null,
+            success: function (data) {
+
+                $("#searchresultShopping").html(data);
+                $("#loading").css("display", "none");
+                $("#searchresultShopping").css({ opacity: 1 });
+
+            }
+        });
+    });
+</script>

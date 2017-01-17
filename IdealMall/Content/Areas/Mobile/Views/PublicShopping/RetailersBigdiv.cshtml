@@ -1,0 +1,85 @@
+﻿@model IdealMall.Models.ShoppingListPublic
+@{
+    Layout = null;
+    List<int> shops = Model.shoppingList.Select(sid => sid.ShopId).Distinct().ToList();
+}
+
+
+  
+  <div width="100%" style="background:white;vertical-align:middle;
+      border-top-left-radius: 10px;border-top-right-radius: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:rgb(193,0,0);
+	border-bottom-color:#6F6F77;" >
+        <img id="printLnk" onclick="javascript:printDiv()" title='Print' style="cursor: pointer; cursor: hand;position:relative;left:45%;" src="@Url.Content("~/images/Print.png")"/>
+       
+  </div>
+     
+@for(int shopCnt=0; shopCnt < shops.Count; shopCnt++)
+{
+
+    Html.RenderPartial("ShopKart",Model.shoppingList.Where(m1 => m1.ShopId == shops[shopCnt]).AsEnumerable());
+}
+
+<div  width="100%" style="border-bottom-left-radius: 10px;border-bottom-right-radius: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:rgb(193,0,0);
+	border-top-color:#6F6F77;
+	background-color:White">
+    <table width="100%" style="border-top-style:solid;">
+        <tr>
+            <td colspan="6"></td>
+        </tr>        
+        <tr style="font-weight:bolder">
+            <td colspan="5" width="80%" align="right">                
+            Grand Total:&nbsp;
+            </td>            
+            <td style=" text-align:right; padding-right:10px">£ @Model.shoppingList.Sum(m => m.Total)</td>
+        </tr>
+      
+</table>
+</div>
+<div>
+<table style=" width:750px;">
+  <tr height="40px" align="left">
+
+            <td align="right" style=" width:750px">
+            <a class="restsStatusOpen" title="Clear My Shopping List" onclick="ClearShoppingList()" style="width: 200px; background-color:rgb(193,0,0)"  >Clear My Shopping List
+            </a>
+            </td>            
+        </tr>
+</table>
+</div>
+<script language="javascript">
+function ClearShoppingList()
+{
+var result = window.confirm("Are you sure to clear the Shopping list?");
+if (result)
+{
+    $.ajax({
+    cache: false,
+    async: false,
+    type: "POST",
+    url: "@Url.Action("ClearShoppingList", "Public")",
+    data: {id: "1" },
+    success: function (data) {
+            if (data == "true")
+            {
+                window.location.href = window.location.href;
+            }
+            else
+            {   
+                alert("Error deleting Shopping List");
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            alert("Error deleting Shopping List");
+          }
+      });
+   }
+
+}
+</script>    
+

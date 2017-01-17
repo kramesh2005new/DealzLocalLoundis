@@ -1,0 +1,14 @@
+﻿
+@model IdealMall.Entities.LocalShopsOffers
+@{
+    ViewBag.Title = "Offers in Local Shops";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+   
+}
+
+@*@{
+    @Html.Partial("RetailersBigdivPaged", Model.ToPagedList(1,15));
+}*@
+@{
+    @Html.Partial("RetailersBigDiv", Model);
+}   

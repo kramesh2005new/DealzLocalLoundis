@@ -1,0 +1,511 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+    $(document).ready(
+function () {
+    totalpages = '@ViewBag.pages';
+}
+);
+</script>
+@{
+
+    
+
+    
+    
+    
+    
+    <table cellspacing="2" cellpadding="3">
+        @for (int i = 0; i < Model.Offers.Count; i++)
+        {
+            <tr>
+                <td class="OfferTableDiv">
+                    <table style="" border="0">
+                        <tr style="height: 60px">
+                            <td colspan="2" style="border-bottom-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; padding-left: 0px; padding-top: 0px">
+                                <img  style="padding-left:5px" alt="@Model.Offers[i].Shop.Name" src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" >
+                                <span style="font-family: 'Bauhaus 93'; font-size: 1.5em; color: #D99694; padding-left: 5px;">@Model.Offers[i].Shop.Name</span>
+                            </td>
+                        </tr>
+                        <tr style="height: 45px">
+                            <td colspan="2">
+                                <span data-role="product" style="font-family: 'Meiryo UI'; font-size: 14px; font-weight: bold;">@Model.Offers[i].Product</span>
+                            </td>
+                        </tr>
+                        <tr style="height: 25px">
+                            <td>
+                                <span style="font-family: 'Meiryo UI'; font-size: 12px;">Volume: @Model.Offers[i].Volume</span>
+                            </td>
+                            <td rowspan="7" align="center" style="width: 150px; font-size: 1px">
+                                <img  src="@Url.Content(Model.Offers[i].ImageURL)" alt="@Model.Offers[i].Product"/>
+                            </td>
+                        </tr>
+                        @if (Model.Offers[i].Sell_Price != "0.00")
+                        {
+                            string strSellPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                            {
+                                strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                strSellPrice = "£ " + Model.Offers[i].Sell_Price;
+                            }
+                            <tr style="height: 25px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Sell At  @strSellPrice each</span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span>&nbsp;</span>
+                                </td>
+                            </tr>   
+                        }
+                        @if (Model.Offers[i].POR != 0)
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">POR: @Model.Offers[i].POR
+                                        %</span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span>&nbsp;</span>
+                                </td>
+                            </tr>   
+                        }
+                        @if (Model.Offers[i].OfferRate != 0)
+                        {
+                            string offerPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                            {
+                                offerPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                offerPrice = "£ " + Model.Offers[i].OfferRate;
+                            }
+                            <tr style="height: 25px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 13px; font-weight: bold; color: #C86301">Offer Price: @offerPrice
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span>&nbsp;</span>
+                                </td>
+                            </tr>   
+                        }
+                        @if (Model.Offers[i].Additional_offer != string.Empty && Model.Offers[i].Additional_offer != null)
+                        {
+                            <tr style="height: 25px; vertical-align: middle">
+                                <td>
+                                    <span class="buyFreeStyle">@Model.Offers[i].Additional_offer</span>
+                                </td>
+                            </tr>    
+                        }
+                        else
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span>&nbsp;</span>
+                                </td>
+                            </tr>   
+                        }
+                        @if (Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            <tr style="height: 35px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px; color: #C86301; font-weight: bold">Offer valid
+                                        until: @Model.Offers[i].OfferEnddate
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="height: 25px">
+                                <td>
+                                    <span>&nbsp;</span>
+                                </td>
+                            </tr>   
+                        }
+                        <tr style="height: 25px">
+                            <td>
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Quantity: </span>
+                                    <input title="Qty" onload="this.focus();" maxlength="" data-role="Qty" value="1"
+                                           placeholder="" style="width: 50px; height: 20px; padding-right: 10px; text-align: left;" />
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr style="height: 40px">
+                            <td>
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <a class="restsStatusOpen" onmousedown="shoppingAddKeyDown(this);" title="Add to Shopping" onclick="AddToShoppingList(this)"
+                                       style="width: 150px">Add to Shopping </a>
+                                    <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                    <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                    <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                    <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                                </div>
+                            </td>
+                            <td>
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <a class=" restsStatusOpen" style="width:150px"  
+                                       title="Compare Price" 
+                                       product-name="@Model.Offers[i].Product"
+                                       product-url ="@(Model.Offers[i].ImageURL)"
+                                       onclick="openPriceCompare(this);" >
+                                        <b>Compare Price </b></a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width:10px"></td>
+                @if (++i < Model.Offers.Count)
+                {
+                    <td class="OfferTableDiv">
+                        <table style="" border="0">
+                            <tr style="height: 60px">
+                                <td colspan="2" style="border-bottom-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; padding-left: 0px; padding-top: 0px">
+                                    <img  style="padding-left:5px" alt="@Model.Offers[i].Shop.Name" src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" >
+                                    <span style="font-family: 'Bauhaus 93'; font-size: 1.5em; color: #D99694; padding-left: 5px;">@Model.Offers[i].Shop.Name</span>
+                                </td>
+                            </tr>
+                            <tr style="height: 45px">
+                                <td colspan="2">
+                                    <span data-role="product" style="font-family: 'Meiryo UI'; font-size: 14px; font-weight: bold;">@Model.Offers[i].Product</span>
+                                </td>
+                            </tr>
+                            <tr style="height: 25px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Volume: @Model.Offers[i].Volume</span>
+                                </td>
+                                <td rowspan="7" align="center" style="width: 150px; font-size: 1px">
+                                    <img  src="@Url.Content(Model.Offers[i].ImageURL)" alt="@Model.Offers[i].Product"/>
+                                </td>
+                            </tr>
+                            @if (Model.Offers[i].Sell_Price != "0.00")
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£ " + Model.Offers[i].Sell_Price;
+                                }
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">Sell At  @strSellPrice each</span>                                </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].POR != 0)
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">POR: @Model.Offers[i].POR
+                                            %</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string offerPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    offerPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    offerPrice = "£ " + Model.Offers[i].OfferRate;
+                                }
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 13px; font-weight: bold; color: #C86301">Offer Price: @offerPrice
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].Additional_offer != string.Empty && Model.Offers[i].Additional_offer != null)
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span class="buyFreeStyle">@Model.Offers[i].Additional_offer</span>
+                                    </td>
+                                </tr>    
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].OfferEnddate != string.Empty)
+                            {
+                                <tr style="height: 35px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px; color: #C86301; font-weight: bold">Offer valid
+                                            until: @Model.Offers[i].OfferEnddate
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            <tr style="height: 25px">
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">Quantity: </span>
+                                        <input title="Qty" onload="this.focus();" maxlength="" data-role="Qty" value="1"
+                                               placeholder="" style="width: 50px; height: 20px; padding-right: 10px; text-align: left;" />
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <a class="restsStatusOpen" onmousedown="shoppingAddKeyDown(this);" title="Add to Shopping" onclick="AddToShoppingList(this)"
+                                           style="width: 150px">Add to Shopping </a>
+                                        <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                        <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                        <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                        <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <a class=" restsStatusOpen" style="width:150px"  
+                                           title="Compare Price" 
+                                           product-name="@Model.Offers[i].Product"
+                                           product-url ="@(Model.Offers[i].ImageURL)"
+                                           onclick="openPriceCompare(this);">
+                                            <b>Compare Price </b></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width:10px"></td>
+                }
+                @if (++i < Model.Offers.Count)
+                {
+                    <td class="OfferTableDiv">
+                        <table style="" border="0">
+                            <tr style="height: 60px">
+                                <td colspan="2" style="border-bottom-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; padding-left: 0px; padding-top: 0px">
+                                    <img  style="padding-left:5px" alt="@Model.Offers[i].Shop.Name" src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" >
+                                    <span style="font-family: 'Bauhaus 93'; font-size: 1.5em; color: #D99694; padding-left: 5px;">@Model.Offers[i].Shop.Name</span>
+                                </td>
+                            </tr>
+                            <tr style="height: 45px">
+                                <td colspan="2">
+                                    <span data-role="product" style="font-family: 'Meiryo UI'; font-size: 14px; font-weight: bold;">@Model.Offers[i].Product</span>
+                                </td>
+                            </tr>
+                            <tr style="height: 25px">
+                                <td>
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Volume: @Model.Offers[i].Volume</span>
+                                </td>
+                                <td rowspan="7" align="center" style="width: 150px; font-size: 1px">
+                                    <img  src="@Url.Content(Model.Offers[i].ImageURL)" alt="@Model.Offers[i].Product"/>
+                                </td>
+                            </tr>
+                            @if (Model.Offers[i].Sell_Price != "0.00")
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£ " + Model.Offers[i].Sell_Price;
+                                }
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">Sell At  @strSellPrice each</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].POR != 0)
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">POR: @Model.Offers[i].POR
+                                            %</span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string offerPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    offerPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    offerPrice = "£ " + Model.Offers[i].OfferRate;
+                                }
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 13px; font-weight: bold; color: #C86301">Offer Price: @offerPrice
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].Additional_offer != string.Empty && Model.Offers[i].Additional_offer != null)
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span class="buyFreeStyle">@Model.Offers[i].Additional_offer</span>
+                                    </td>
+                                </tr>    
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            @if (Model.Offers[i].OfferEnddate != string.Empty)
+                            {
+                                <tr style="height: 35px">
+                                    <td>
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px; color: #C86301; font-weight: bold">Offer valid
+                                            until: @Model.Offers[i].OfferEnddate
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr style="height: 25px">
+                                    <td>
+                                        <span>&nbsp;</span>
+                                    </td>
+                                </tr>   
+                            }
+                            <tr style="height: 25px">
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <span style="font-family: 'Meiryo UI'; font-size: 12px;">Quantity: </span>
+                                        <input title="Qty" onload="this.focus();" maxlength="" data-role="Qty" value="1"
+                                               placeholder="" style="width: 50px; height: 20px; padding-right: 10px; text-align: left;" />
+                                    </div>
+                                    @*<img src="../../images/Loader.gif" data-role="loading" style="padding-left: 25px;
+                                    display: none;" />*@
+                                    <img id="loading" src='/images/shoploader.gif' style="position: absolute; top: 0%; left: 5%; display: none;" />
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <a class="restsStatusOpen" onmousedown="shoppingAddKeyDown(this);" title="Add to Shopping" onclick="AddToShoppingList(this)"
+                                           style="width: 150px">Add to Shopping </a>
+                                        <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                        <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                        <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                        <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="margin: 0 auto; float: left; display: inline;">
+                                        <a class=" restsStatusOpen" style="width:150px"  
+                                           product-name="@(Model.Offers[i].Product)"
+                                           product-url = "@(Model.Offers[i].ImageURL)"
+                                           title="Compare Price" onclick="openPriceCompare(this);" >
+                                            <b>Compare Price </b></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                }
+            </tr>
+            <tr>
+               <td colspan ="5" style="height:10px;"></td> 
+            </tr>
+        }
+    </table>          
+
+}

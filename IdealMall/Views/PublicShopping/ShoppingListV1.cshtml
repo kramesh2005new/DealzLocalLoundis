@@ -1,0 +1,31 @@
+﻿       
+@{
+    if ((bool)ViewData["idHasValue"] )
+    {
+        Layout = null;
+    }
+    else {   ViewBag.Title = "Trade Shopping List";
+    Layout = "~/Views/Shared/_LayoutPublicShoppingListV1.cshtml";
+    }
+
+}
+
+@if (((bool)ViewData["idHasValue"]))
+{
+        @Html.Partial("RetailersBigdivV1")  
+      
+}
+else
+{
+    
+        @*<div class="colRightTrade">
+        
+                    @Html.Partial("RetailersMenuV1")
+        
+         </div>*@
+        <div id="searchresultShopping" class="colLeftTradeShoppingList" >
+                @Html.Partial("RetailersBigdivV1")  
+        </div>
+    
+  
+}

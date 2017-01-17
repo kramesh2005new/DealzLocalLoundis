@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Offers in Local Shops";
+    if(!ViewBag.browser)
+    {
+    Layout = "";
+    }
+    else{
+        Layout = "~/Areas/Mobile/Views/Shared/_LayoutPublic.cshtml";
+    }
+   
+}
+@*Added by Varadha - Begin *@
+<style>
+    .myDialogClass .ui-widget-header {
+  background: rgb(193,0,0);
+  font-size:medium;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+    background: white;
+    color:Black;
+    vertical-align:text-top;
+    font-size:small !important;    
+}
+.ui-button-text
+{
+    text-indent:0px !important;
+    padding:0px !important;    
+    /*font-family: !important;*/
+}
+</style>
+<div>
+<div id="priceComparisonDiv" style="display:none"> </div>
+</div>
+<script language="javascript">
+
+    function openPriceCompare(ctrl) {
+       
+        var product = $(ctrl).attr("product-name");
+        var imgURL = $(ctrl).attr("product-url");
+        var postCode = $(ctrl).attr("post-code");
+        var imgStr = imgURL;
+
+        $.ajax({
+            async: false,
+            cache: false,
+            type: "GET",
+            url: "/Public/PriceCompare",
+            data: { Product: product, imageURL: imgURL, Postcode: postCode },
+            success: function (data) {
+
+                $("#priceComparisonDiv").html(data);
+                $("#priceComparisonDiv").dialog({ modal: true,
+                    title: 'Price Comparison',
+                    width: "60%",
+                    height: "auto",
+                    dialogClass: "myDialogClass",
+                    closeText: "X"
+                });
+
+
+            }
+        });
+
+
+    }
+</script>
+@*Added by Varadha - End*@
+
+  <div id="body-content" data-enhance="false">
+<div> <span style="color: #C86301; font-weight: bold; font-size: 15px;float:left;">
+                           </span></div>
+                             <span id="addtoshopmessage" style="color: #C86301; font-weight: bold; font-size: 15px;float:left;display:none;">
+                           Create an account to compare price of a product and do shopping</span>
+    <div class="colLeft">
+        
+            @Html.Partial("RetailersMenu")
+        
+    </div>
+    <div id="searchresult" class="colRight">
+        
+            @if (ViewBag.view == "box")
+            {
+            @Html.Partial("Retailers")
+            }
+            else
+            {
+            @Html.Partial("RetailersBigdiv")  
+            }
+        
+    </div>
+</div>

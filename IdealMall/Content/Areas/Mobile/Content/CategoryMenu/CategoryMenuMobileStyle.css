@@ -1,0 +1,189 @@
+ul#css3menu1 {
+	border-width: 0px; list-style: none; margin: 0px; padding: 0px; border-radius: 4px; background-color: rgb(219, 222, 226); -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+ul#css3menu1 ul {
+	border-width: 0px; list-style: none; margin: 0px; padding: 0px; border-radius: 4px; background-color: rgb(219, 222, 226); -moz-border-radius: 4px; -webkit-border-radius: 4px;
+}
+ul#css3menu1 ul {
+	border-width: 1px; border-style: solid; border-color: rgb(255, 255, 255) rgb(210, 212, 214) rgb(188, 189, 191); padding: 5px 9px 9px; border-radius: 4px; left: 0px; top: 100%; display: none; position: absolute; box-shadow: 0px 2px 1px #bcbdbf; background-color: rgb(232, 232, 232); -moz-border-radius: 4px; -webkit-border-radius: 4px; -moz-box-shadow: 0 2px 1px #BCBDBF; -webkit-box-shadow: 0 2px 1px #BCBDBF;
+}
+ul#css3menu1 li:hover > * {
+	display: block;
+}
+ul#css3menu1 li {
+	font-size: 0px; float: left; display: block; white-space: nowrap; position: relative;
+}
+ul#css3menu1 li:hover {
+	z-index: 1;
+}
+ul#css3menu1 {
+	margin: 0px 0.2%; padding: 8px 0.6% 11px 0%; border-radius: 5px; width: 99%; font-size: 0px; display: inline-block; position: relative; z-index: 999; -ms-zoom: 1; box-shadow: inset 0px 1px 1px #909193, 0px 1px 0px #ffffff; -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 1px #909193 inset, 0 1px 0 #FFFFFF; -webkit-box-shadow: 0 1px 1px #909193 inset, 0 1px 0 #FFFFFF;
+}
+* html ul#css3menu1 li a {
+	display: inline-block;
+}
+ul#css3menu1 > li {
+	margin: 0px 0% 0px 0.5%; width: 12%;
+}
+body:first-of-type ul#css3menu1 {
+	display: inline-table; border-spacing: 6px 0;
+}
+body:first-of-type ul#css3menu1 > li {
+	float: none; display: table-cell;
+}
+ul#css3menu1 ul > li {
+	margin: 6px 0px 0px;
+}
+ul#css3menu1 a:active {
+	outline-style: none;
+}
+ul#css3menu1 a:focus {
+	outline-style: none;
+}
+ul#css3menu1 a {
+	background-position: 0px 0px; border-width: 0px; font: 13px/normal "Lucida Sans Unicode", "Lucida Grande", sans-serif; padding-left: 8px; text-align: left; color: rgb(255, 255, 255); text-decoration: none; vertical-align: middle; display: block; cursor: pointer; font-size-adjust: none; font-stretch: normal; background-repeat: repeat;
+}
+ul#css3menu1 ul li {
+	margin: 4px 0px 0px; float: none;
+}
+ul#css3menu1 ul a {
+	padding: 0px; border-radius: 0px; text-align: left; color: rgb(51, 51, 51); text-decoration: none; -moz-border-radius: 0px; -webkit-border-radius: 0px;
+}
+ul#css3menu1 li:hover > a {
+	background-position: 0px 100%; color: rgb(255, 255, 255); text-decoration: none;
+}
+ul#css3menu1 li a.pressed {
+	background-position: 0px 100%; color: rgb(255, 255, 255); text-decoration: none;
+}
+ul#css3menu1 img {
+	border: currentColor; border-image: none; margin-right: 8px; vertical-align: middle;
+}
+ul#css3menu1 span {
+	background-position: right; overflow: visible; padding-right: 18px; display: block; background-image: url("arrow.png"); background-repeat: no-repeat;
+}
+ul#css3menu1 > label.switch {
+	padding: 8px; width: 25px; height: 20px; display: none; cursor: pointer;
+}
+ul#css3menu1 > label.switch::before {
+	background: rgb(255, 255, 255); border-radius: 4px; width: 25px; height: 4px; display: block; position: absolute; content: ""; box-shadow: 0px 8px #ffffff, 0px 16px #ffffff; -moz-box-shadow: 0 8px #FFFFFF, 0 16px #FFFFFF; -webkit-box-shadow: 0 8px #FFFFFF, 0 16px #FFFFFF;
+}
+ul#css3menu1 > label.switch:hover::before {
+	background: rgb(255, 255, 255); box-shadow: 0px 8px #ffffff, 0px 16px #ffffff; -moz-box-shadow: 0 8px #FFFFFF, 0 16px #FFFFFF; -webkit-box-shadow: 0 8px #FFFFFF, 0 16px #FFFFFF;
+}
+ul#css3menu1 > .switchbox {
+	display: none;
+}
+ul#css3menu1 ul li:hover > a {
+	color: rgb(61, 182, 227); text-decoration: none;
+}
+ul#css3menu1 ul li a.pressed {
+	color: rgb(61, 182, 227); text-decoration: none;
+}
+ul#css3menu1 li.topmenu > a {
+	border-width: 0px 0px 2px; border-style: solid; border-color: rgb(53, 159, 200); border-radius: 5px; box-shadow: 0px -1px #3db6e3, 0px 3px 0px #0e3871, 0px 6px 4px #999999; background-image: linear-gradient(180deg, rgba(44, 160, 202, 0), rgba(0, 0, 0, 0.13)); background-color: rgb(61, 182, 227); -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 -1px #3db6e3, 0 3px 0 #0E3871, 0 6px 4px #999999; -webkit-box-shadow: 0 -1px #3db6e3, 0 3px 0 #0E3871, 0 6px 4px #999999;
+}
+ul#css3menu1 li.topmenu:hover > a {
+	border-width: 2px 0px 0px; border-style: solid; border-color: rgb(44, 161, 203); box-shadow: 0px 2px 0px #2ab7ec, 0px 3px 0px #0e3871, 0px 1px 0px #60c9f0, 0px 5px 3px #999999; background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.13), rgba(44, 160, 202, 0)); background-color: rgb(61, 182, 227); -moz-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999; -webkit-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999;
+}
+ul#css3menu1 li.topmenu a.pressed {
+	border-width: 2px 0px 0px; border-style: solid; border-color: rgb(44, 161, 203); box-shadow: 0px 2px 0px #2ab7ec, 0px 3px 0px #0e3871, 0px 1px 0px #60c9f0, 0px 5px 3px #999999; background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.13), rgba(44, 160, 202, 0)); background-color: rgb(61, 182, 227); -moz-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999; -webkit-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999;
+}
+ul#css3menu1 li.toplast > a {
+	border-width: 0px 0px 2px; border-style: solid; border-color: rgb(53, 159, 200); border-radius: 5px; box-shadow: 0px -1px #3db6e3, 0px 3px 0px #0e3871, 0px 6px 4px #999999; background-image: linear-gradient(180deg, rgba(44, 160, 202, 0), rgba(0, 0, 0, 0.13)); background-color: rgb(61, 182, 227); -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 -1px #3db6e3, 0 3px 0 #0E3871, 0 6px 4px #999999; -webkit-box-shadow: 0 -1px #3db6e3, 0 3px 0 #0E3871, 0 6px 4px #999999;
+}
+ul#css3menu1 li.toplast:hover > a {
+	border-width: 2px 0px 0px; border-style: solid; border-color: rgb(44, 161, 203); box-shadow: 0px 2px 0px #2ab7ec, 0px 3px 0px #0e3871, 0px 1px 0px #60c9f0, 0px 5px 3px #999999; background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.13), rgba(44, 160, 202, 0)); background-color: rgb(61, 182, 227); -moz-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999; -webkit-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999;
+}
+ul#css3menu1 li.toplast a.pressed {
+	border-width: 2px 0px 0px; border-style: solid; border-color: rgb(44, 161, 203); box-shadow: 0px 2px 0px #2ab7ec, 0px 3px 0px #0e3871, 0px 1px 0px #60c9f0, 0px 5px 3px #999999; background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.13), rgba(44, 160, 202, 0)); background-color: rgb(61, 182, 227); -moz-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999; -webkit-box-shadow: 0 2px 0 #2ab7ec, 0 3px 0 #0E3871, 0 1px 0 #60C9F0, 0 5px 3px #999999;
+}
+ul#css3menu1 > li:nth-of-type(1) {
+	width: 10%;
+}
+ul#css3menu1 > li:nth-of-type(2) {
+	width: 15%;
+}
+ul#css3menu1 > li:nth-of-type(3) {
+	width: 10%;
+}
+ul#css3menu1 > li:nth-of-type(5) {
+	width: 9%;
+}
+ul#css3menu1 > li:nth-of-type(6) {
+	width: 14%;
+}
+ul#css3menu1 > li:nth-of-type(7) {
+	width: 13%;
+}
+ul#css3menu1 > li:nth-of-type(8) {
+	width: 13%;
+}
+@media only screen and (max-width:749px), only screen and (max-device-width:749px)
+{
+ul#css3menu1 > li:nth-of-type(1) {
+	margin: 0px 0% 6px 0.8%; width: 17%;
+}
+ul#css3menu1 > li:nth-of-type(2) {
+	margin: 0px 0% 6px 0.8%; width: 26%;
+}
+ul#css3menu1 > li:nth-of-type(3) {
+	margin: 0px 0% 6px 0.8%; width: 17%;
+}
+ul#css3menu1 > li:nth-of-type(4) {
+	margin: 0px 0% 6px 0.8%; width: 21%;
+}
+ul#css3menu1 > li:nth-of-type(5) {
+	margin: 0px 0% 6px 0.8%; width: 15%;
+}
+ul#css3menu1 > li:nth-of-type(6) {
+	margin: 0px 0% 6px 1%; width: 35%;
+}
+ul#css3menu1 > li:nth-of-type(7) {
+	margin: 0px 0% 6px 1%; width: 32%;
+}
+ul#css3menu1 > li:nth-of-type(8) {
+	margin: 0px 0% 0px 1%; width: 30%;
+}
+body:first-of-type ul#css3menu1 {
+	display: inline-block;
+}
+body:first-of-type ul#css3menu1 > li {
+	float: left !important; display: block;
+}
+}
+@media screen and (max-width:768px)
+{
+ul#css3menu1 > li {
+	
+}
+ul#css3menu1 ul .submenu {
+	left: 0px; top: 100%; right: auto;
+}
+ul#css3menu1 li > ul {
+	left: 0px; top: 100%; right: auto;
+}
+ul#css3menu1 .submenu {
+	width: 100% !important; padding-right: 0px; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+ul#css3menu1 ul {
+	width: 100% !important; padding-right: 0px; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+ul#css3menu1 .column {
+	width: 100% !important; padding-right: 0px; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+}
+@media screen and (max-width:446px)
+{
+ul#css3menu1 {
+	width: 100%;
+}
+ul#css3menu1 > li {
+	width: 100% !important; display: none !important; position: relative;
+}
+ul#css3menu1 > label.switch {
+	display: block !important;
+}
+ul#css3menu1 :checked.switchbox ~ li {
+	display: block !important;
+}
+}

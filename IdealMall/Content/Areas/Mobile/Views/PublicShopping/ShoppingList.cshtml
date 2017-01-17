@@ -1,0 +1,32 @@
+﻿       
+@{
+    if ((bool)ViewData["idHasValue"] )
+    {   
+        Layout = null;
+    }
+    else {   ViewBag.Title = "Public Shopping List";
+    Layout = "~/Areas/Mobile/Views/Shared/_LayoutShoppingList.cshtml";
+    //Layout = null;
+    }
+
+}
+
+
+                @Html.Partial("ShopKart")  
+    <script language="javascript">
+        function printDiv() {
+            var wind = window.open();
+            var htmlContent = "<html><head><title>Public Shopping List</title>";
+            htmlContent += "<link href='@Url.Content("~/Content/site.css")' rel='stylesheet' type='text/css' />";
+            htmlContent += "<link href='@Url.Content("~/Content/styles.css")' rel='stylesheet' type='text/css' />";
+            htmlContent += "</head><body>";
+            htmlContent += "<div><img src='@(Url.Content("~/Images/logo.png"))'/> <span style='font-weight:bold;'>Public Shopping list </span></div>";
+    
+            htmlContent += $("#searchresult").html();
+            htmlContent += "</body></html>";
+            wind.document.write(htmlContent);
+            wind.document.getElementById("printLnk").style.display = "none";
+            wind.print();
+ 
+        }
+    </script>

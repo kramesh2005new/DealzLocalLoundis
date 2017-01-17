@@ -1,0 +1,105 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+    //var fixmeTop = $('.retailermenu').offset().top;
+    $(document).ready(
+function () {
+
+    if ($("#jPanelMenu-menu")) {
+        $("#jPanelMenu-menu").html($("#firstload").html());
+        $("#firstload").remove();
+    }
+    $(".retailermenu li").click(ccclick);
+    
+});
+    function updateQueryStringParameter(uri, key, value) {
+
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+    function ccclick() {
+        $(".retailermenu").toggle();
+        var url = window.location.href;
+        if ($(this).children("input:first")[0]) {
+            var newSrc = $(this).children("input:first")[0].value;
+            getresult("", newSrc, null);
+        }
+        $(".retailermenu li").each(function (idx, li) {
+            $(li).removeClass("selectedPublicmenu");
+            $(li).addClass("pliMenu");
+        });
+        $(this).addClass("selectedPublicmenu");
+    }
+
+</script>
+@{
+    <ul class="retailermenu" id="firstload" style="display:none;position:absolute;z-index:102;">
+        @if (ViewBag.cc == 0)
+        {
+            <li class="selectedPublicmenu shadow" style="text-align: center;">All
+                <input type="hidden" value="0" />
+                <br />
+                </li>
+        }
+        else
+        {
+            <li class="pliMenu shadow" style="text-align: center;height:45px;">All
+                <input type="hidden" value="0" />
+                <br />
+
+            </li>
+        }
+        @for (int i = 0; i < Model.local.Count; i++)
+        {
+            if (ViewBag.cc == Model.local[i].ID)
+            {
+             <li class=" selectedPublicmenu shadow">
+                <table style="width: 100%">
+                    <tr style="height: 45px">
+                        <td align="left">
+                            <img src="@Url.Content(Model.local[i].ImgUrl)"  alt="@Model.local[i].Name"  style="vertical-align:center;float: right;"/>
+
+                        </td>
+                        <td align="right">
+                            @Model.local[i].Name
+
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.local[i].ID" />
+                <br />
+
+            </li>
+            }
+            else
+            {
+            <li class="pliMenu shadow">
+
+                <table style="width: 100%;vertical-align:middle;">
+                    <tr style="height:45px">
+                        <td align="left">
+                            <img src="@Url.Content(Model.local[i].ImgUrl)"  alt="@Model.local[i].Name" style="vertical-align:middle;padding-top:-5px;"/>
+                        </td>
+                        <td align="right" style="">
+                         @Model.local[i].Name
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.local[i].ID" />
+                <br />
+
+            </li>
+            }
+
+        }
+    </ul>
+}

@@ -1,0 +1,119 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+    //var fixmeTop = $('.retailermenu').offset().top;
+    $(document).ready(
+function () {
+    $(".retailermenu li").click(ccclick);
+
+    // Get initial position
+    //$(window).scroll(function() {            // Assign scroll event listener
+    //    var currentScroll = $(window).scrollTop(); // Get current position
+    //    if (currentScroll >= fixmeTop) { // Make it fixed if you've scrolled to it
+    //        $('.retailermenu').css({
+    //            position: 'fixed'
+    //           ,
+    //            top: '2px',
+    ////            left: '0'
+    //        });
+    //    } else {                       // Make it static if you scroll above
+    //        $('.retailermenu').css({
+    //            position: 'static'
+    //        });
+    //    }
+    //});
+
+});
+    function updateQueryStringParameter(uri, key, value) {
+
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+    function ccclick() {
+        $(".retailermenu").toggle();
+        var url = window.location.href;
+        if ($(this).children("input:first")[0]) {
+            var newSrc = $(this).children("input:first")[0].value;
+            getresult("", newSrc, null);
+           
+        }
+        $(".retailermenu li").each(function (idx, li) {
+            $(li).removeClass("selectedretailmenu");
+            $(li).addClass("liMenu");
+        });
+        $(this).addClass("selectedretailmenu");
+        //var separator = url.indexOf('?') !== -1 ? "&" : "?";
+        //if(url.toLowerCase().indexOf("cashandcarry") >= 0)
+        //{
+        //window.location.href = updateQueryStringParameter(url,"cashandcarry",newSrc);
+        //}
+        //else{
+        //window.location.href=window.location.href+"trade/Searchresult"+separator+"cashandcarry="+newSrc;
+        //}
+    }
+
+
+
+
+
+</script>
+@{
+    <ul class="retailermenu" style="display:none;position:absolute;top:35px;background-color:White;z-index:102;">
+        @if (ViewBag.cc == 0)
+        {
+            <li class="selectedretailmenu" style="text-align: center;background-color:rgb(129, 192, 47);height:45px;">All
+                <input type="hidden" value="0" /></li>
+        }
+        else
+        {
+            <li class="liMenu" style="text-align: center;height:45px;">All
+                <input type="hidden" value="0" />
+            </li>
+        }
+        @for (int i = 0; i < Model.CashandCarry.Count; i++)
+        {
+            if (ViewBag.cc == Model.CashandCarry[i].ID)
+            {
+            <li style="background-color:rgb(129, 192, 47);">
+                <table style="width: 100%">
+                    <tr style="height:45px">
+                        <td align="left">
+                            @Model.CashandCarry[i].Name
+                        </td>
+                        <td align="right">
+                            <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)"  alt="@Model.CashandCarry[i].Name"  style="vertical-align:middle;padding-top:-5px;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.CashandCarry[i].ID" />
+            </li>
+            }
+            else
+            {
+            <li class="liMenu">
+                <table style="width: 100%;vertical-align:middle;">
+                    <tr style="height:45px">
+                        <td align="left">
+                            @Model.CashandCarry[i].Name
+                        </td>
+                        <td align="right">
+                            <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)"  alt="@Model.CashandCarry[i].Name" style="vertical-align:middle;padding-top:-5px;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.CashandCarry[i].ID" />
+            </li>
+            }
+
+        }
+    </ul>
+}

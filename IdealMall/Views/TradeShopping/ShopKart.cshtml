@@ -1,0 +1,66 @@
+﻿@model IEnumerable<IdealMall.Entities.ShoppingList>
+@{
+    Layout = null;
+
+    List<IdealMall.Entities.CashandCarryShop> shopDetails = (List<IdealMall.Entities.CashandCarryShop>)(ViewData["CashAndCarryShops"]);
+    IdealMall.Entities.CashandCarryShop shopDetail = shopDetails.Where(m1=>m1.ID == Model.FirstOrDefault().ShopId).FirstOrDefault();
+    
+}
+
+<div  width="100%" >
+    <table width="100%" style="background:white; border:1;border-left-style:solid;border-left-width:thin;border-left-color:rgb(193,0,0);
+    border-right-style:solid;border-right-width:thin;border-right-color:rgb(193,0,0); ">
+        <tr   border="1px">
+            <td colspan="6" valign="top" style="font-weight:bold;text-align:left" >
+                <img src="@Url.Content(shopDetail.ImgUrl)"/>
+                 
+                @(shopDetail.Name)
+                
+                
+            </td>   
+        </tr>
+        @for (int kartCnt=0; kartCnt <= Model.Count(); kartCnt++)
+        {
+             <tr style="@(kartCnt == 0 ? "border-top-style:solid;border-top-width:thin;border-bottom-style:solid;border-bottom-width:thin;height:15%" : "")">
+
+                <td width="10%">@(kartCnt==0? 
+                            new MvcHtmlString("S.No"):
+                            new MvcHtmlString(kartCnt.ToString()))
+                </td>
+                <td width="45%" style=" text-align:left">@(kartCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().Product) : 
+                            Html.DisplayFor(m=>m.ElementAt(kartCnt-1).Product))
+                </td>
+                <td width="10%" style=" text-align:right">@(kartCnt==0?
+                            Html.LabelFor(m => m.FirstOrDefault().Qty) :
+                            Html.DisplayFor(m => m.ElementAt(kartCnt-1).Qty))
+                </td>
+                <td width="10%" style=" text-align:right">@(kartCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().OfferRate) :
+                            Html.DisplayFor(m => m.ElementAt(kartCnt-1).OfferRate))
+                </td>
+                <td width="10%" style=" text-align:right">@(kartCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().VAT) :
+                            Html.DisplayFor(m => m.ElementAt(kartCnt-1).VAT))%
+                </td>
+                <td width="15%" style=" text-align:right; padding-right:10px" >@(kartCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().Total) : 
+                            Html.DisplayFor(m=>m.ElementAt(kartCnt-1).Total))
+                </td>
+            </tr>
+         }
+    
+            <tr>
+                <td colspan="6"></td>
+            </tr>
+            <tr style="font-weight:bold">
+                <td colspan="4" align="right" style=" text-align:right">                    
+                </td>
+                <td>Total:</td>
+                <td width="15%" style=" text-align:right; padding-right:10px">
+                   £ @Model.Sum(m => m.Total)
+                </td>
+            </tr>
+    </table>
+
+</div>

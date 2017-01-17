@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Offers in Cash and Carry";
+    if (!ViewBag.browser)
+    {
+        Layout = "";
+    }
+}
+
+<div>    
+    @Html.Partial("RetailersMenu")       
+    <div id="searchresult" >          
+        @Html.Partial("RetailersBigdiv")          
+    </div>
+</div>

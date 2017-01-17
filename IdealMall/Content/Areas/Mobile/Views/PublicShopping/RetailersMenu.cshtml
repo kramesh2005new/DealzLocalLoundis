@@ -1,0 +1,105 @@
+﻿@model IdealMall.Models.ShoppingListPublic
+@{
+    Layout = null;
+}
+@{
+    <ul class="retailermenu" id="firstload" style="display:none;position:absolute;z-index:102;">
+        @if (ViewBag.cc == 0)
+        {
+            <li class="selectedretailmenu" style="text-align: center">All
+                <input type="hidden" value="0" /></li>
+        }
+        else
+        {
+            <li class="selectedretailmenu" style="text-align: center;">All
+                <input type="hidden" value="0" />
+            </li>
+        }
+        @for (int i = 0; i < Model.LocalShop.Count; i++)
+        {
+            if (ViewBag.cc == Model.LocalShop[i].ID)
+            {
+            <li class="selectedretailmenu">
+                <table style="width: 100%">
+                    <tr>
+                        <td align="left">
+                            @Model.LocalShop[i].Name
+                        </td>
+                        <td align="right">
+                            <img src="@Url.Content(Model.LocalShop[i].ImgUrl)"  alt="@Model.LocalShop[i].Name"  style="vertical-align:center;float: right;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.LocalShop[i].ID" />
+            </li>
+            }
+            else
+            {
+            <li class="liMenu">
+                <table style="width: 100%">
+                    <tr>
+                        <td align="left">
+                            @Model.LocalShop[i].Name
+                        </td>
+                        <td align="right" style="float: right">
+                            <img src="@Url.Content(Model.LocalShop[i].ImgUrl)"  alt="@Model.LocalShop[i].Name" style="vertical-align:center;float: right;;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.LocalShop[i].ID" />
+            </li>
+            }
+
+        }
+    </ul>
+}
+<script type="text/javascript">
+    $(document).ready(
+function () {
+
+    if ($("#jPanelMenu-menu")) {
+        $("#jPanelMenu-menu").html($("#firstload").html());
+        $("#firstload").remove();
+    }
+    $(".retailermenu li").click(ccclick);
+    // Get initial position
+    //$(window).scroll(function() {            // Assign scroll event listener
+    //    var currentScroll = $(window).scrollTop(); // Get current position
+    //    if (currentScroll >= fixmeTop) { // Make it fixed if you've scrolled to it
+    //        $('.retailermenu').css({
+    //            position: 'fixed'
+    //           ,
+    //            top: '2px',
+    ////            left: '0'
+    //        });
+    //    } else {                       // Make it static if you scroll above
+    //        $('.retailermenu').css({
+    //            position: 'static'
+    //        });
+    //    }
+    //});
+
+});
+
+
+function ccclick() {
+        
+        $("#loading").css("display", "block");
+        $("#searchresult").css({ opacity: 0.3 });
+
+        $.ajax({
+            async: false,
+            cache: false,
+            type: "GET",
+            url: "/PublicShopping/Index/" + $(this).find("input").val(),
+            data: null,
+            success: function (data) {
+                
+                $("#searchresult").html(data);
+                $("#loading").css("display", "none");
+                $("#searchresult").css({ opacity: 1 });
+
+            }
+        });
+    }
+</script>

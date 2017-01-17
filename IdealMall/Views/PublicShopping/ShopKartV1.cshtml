@@ -1,0 +1,307 @@
+﻿@model IEnumerable<IdealMall.Entities.ShoppingList>
+@{
+    Layout = null;
+
+    List<IdealMall.Entities.LocalShop> shopDetails = (List<IdealMall.Entities.LocalShop>)(ViewData["LocalShops"]);
+    IdealMall.Entities.LocalShop shopDetail = shopDetails.Where(m1 => m1.ID == Model.FirstOrDefault().ShopId).ToList().FirstOrDefault();
+    
+}
+<script language="javascript">
+    function DeleteProduct_ShoppingList(product, volume, shop_id) {
+        var result = window.confirm("Are you sure to delete the product?");
+        if (result) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@Url.Action("ShoppingList_Delete_Public", "PublicShopping")",
+                data: { Product: product, volume: volume, Shop_id: shop_id },
+                success: function (data) {
+                    if (data == "true") {
+                        window.location.href = "@(Url.Action("Index", "PublicShopping"))";
+                        alert("Product deleted successfully.");
+                    }
+                    else {
+                        alert("Error deleting Shopping List");
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Error deleting Shopping List");
+                }
+            });
+        }
+
+    }
+
+    function Delete_ShoppingList(shop_id) {
+        var result = window.confirm("Are you sure to delete all products in selected shop?");
+        if (result) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@Url.Action("ShoppingList_Shop_Public", "PublicShopping")",
+                data: { Shop_id: shop_id },
+                success: function (data) {
+                    if (data == "true") {
+                        window.location.href = "@(Url.Action("Index", "PublicShopping"))";
+                        alert("Products deleted successfully.");
+                    }
+                    else {
+                        alert("Error deleting Shopping List");
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Error deleting Shopping List");
+                }
+            });
+        }
+
+    }
+
+    function Update_ShoppingList(product, volume, shop_id, qty) {
+        var result = window.confirm("Are you sure to update?");
+        if (result) {
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@Url.Action("Update_ShoppingList", "PublicShopping")",
+                data: { Product: product, volume: volume, Shop_id: shop_id, qty: qty },
+                success: function (data) {
+                    if (data == "true") {
+                        window.location.href = "@(Url.Action("Index", "PublicShopping"))";
+                        alert("Products updated successfully.");
+                    }
+                    else {
+                        alert("Error updating Shopping List");
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Error updating Shopping List");
+                }
+            });
+        }
+
+    }
+
+    function CollectToStore() {
+        $.colorbox(
+        {
+            href: '#Collectinstore',
+            inline: true,
+            width: '800px',
+            escKey: true,
+            opacity: 0.50,
+            overlayClose: false,
+            onClosed: function () {
+                if ($("#checkoutstatus").val() == 'success') {
+                    SendMail();
+                }
+            }
+        });
+    }
+
+    function HomeDelivery() {
+        $.colorbox(
+        {
+            href: '#HomeDeliver',
+            inline: true,
+            width: '800px',
+            escKey: true,
+            opacity: 0.50,
+            overlayClose: false,
+            onClosed: function () {
+                if ($("#HomeDeliverystatus").val() == 'success') {
+                    SendHomeDeliveryMail();
+                }
+            }
+        });
+    }
+
+    function SendMail() {
+        $("#loading").css("display", "block");
+        //var wind = window;
+        var htmlContent = "<html><head>";
+        htmlContent += "<link href='@Url.Content("~/Content/site.css")' rel='stylesheet' type='text/css' />";
+        htmlContent += "<link href='@Url.Content("~/Content/style.css")' rel='stylesheet' type='text/css' />";
+
+        htmlContent += "</head><body>";
+        htmlContent += "<div><img src='@(Url.Content("~/img/logo.png"))'/> <span style='font-weight:bold;'> Collect in Store </span></div>";
+        htmlContent += "<div><span style='font-weight:bold;>Main Phone Number : </span>" + $('#hdnMainphonenumber').val() + " </div>";
+        htmlContent += "<div><span style='font-weight:bold;>Mobile Number : </span>" + $('#hdnMobileNumber').val() + " </div>";
+        htmlContent += "<div><span style='font-weight:bold;>Date : </span>" + $('#hdndtvalue').val() + " </div>";
+        htmlContent += "<div><span style='font-weight:bold;>Time : </span>" + $('#hdnhourvalue').val() + ":" + $('#hdnminutevalue').val() + " </div>";
+        htmlContent += "<div></div>";
+
+        htmlContent += $("#MyShoppingList").html();
+        htmlContent += "</body></html>";
+
+        $.ajax({
+            cache: false,
+            async: false,
+            type: "POST",
+            content: "application/json; charset=utf-8",
+            url: "@(Url.Action("sendMail", "PublicShopping"))",
+            data: { "body": htmlContent },
+            success: function (data) {
+                if (data == "Session Time out") {
+                    window.location.href = "@(Url.Action("PublicLogin", "Public"))";
+                    return;
+                }
+                MailSuccess(data);
+
+                $("#loading").css("display", "none");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 401) {
+                    window.location.href = "@(Url.Action("PublicLogin", "Public"))";
+            }
+                $("#loading").css("display", "none");
+            }
+
+        });
+}
+function SendHomeDeliveryMail() {
+    $("#loading").css("display", "block");
+    //var wind = window;
+    var htmlContent = "<html><head>";
+    htmlContent += "<link href='@Url.Content("~/Content/site.css")' rel='stylesheet' type='text/css' />";
+    htmlContent += "<link href='@Url.Content("~/Content/style.css")' rel='stylesheet' type='text/css' />";
+
+    htmlContent += "</head><body>";
+    htmlContent += "<div><img src='@(Url.Content("~/img/logo.png"))'/> <span style='font-weight:bold;'> Home Delivery </span></div>";
+    htmlContent += "<div><span style='font-weight:bold;>Main Phone Number : </span>" + $('#hdnHistoryMainphonenumber').val() + " </div>";
+    htmlContent += "<div><span style='font-weight:bold;>Mobile Number : </span>" + $('#hdnHistoryMobileNumber').val() + " </div>";
+    htmlContent += "<div><span style='font-weight:bold;>Date : </span>" + $('#hdnHistorydtvalue').val() + " </div>";
+    htmlContent += "<div><span style='font-weight:bold;>Time : </span>" + $('#hdnHistoryhourvalue').val() + ":" + $('#hdnHistoryminutevalue').val() + " </div>";
+    htmlContent += "<div><span style='font-weight:bold;>Delivery Address :</span></div>";
+    htmlContent += "<div>" + $('#DoorNo').val() + ", " + $('#AddressLine1').val() + " </div>";
+    htmlContent += "<div>" + $('#AddressLine2').val() + ", " + $('#AddressLine3').val() + " </div>";
+    htmlContent += "<div>" + $('#postcode').val() + ".</div>";
+    htmlContent += "<div></div>";
+
+    htmlContent += $("#MyShoppingList").html();
+    htmlContent += "</body></html>";
+
+    $.ajax({
+        cache: false,
+        async: false,
+        type: "POST",
+        content: "application/json; charset=utf-8",
+        url: "@(Url.Action("sendMail", "PublicShopping"))",
+            data: { "body": htmlContent },
+            success: function (data) {
+                if (data == "Session Time out") {
+                    window.location.href = "@(Url.Action("PublicLogin", "Public"))";
+                    return;
+                }
+                MailSuccess(data);
+
+                $("#loading").css("display", "none");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 401) {
+                    window.location.href = "@(Url.Action("PublicLogin", "Public"))";
+            }
+                $("#loading").css("display", "none");
+            }
+
+        });
+}
+function MailSuccess(data) {
+    alert(data);
+}
+
+</script>
+<div class="shopping-details">
+    <div class="shopping-header clearfix">
+
+        <div class="printmail shop-delete">
+            @*<a href="javascript:void(0);" class="clear_btn" onclick="ClearShoppingList();"><span>Clear My Shopping List</span></a>*@
+            <a class="delete" href="javascript:void(0);" onclick="ClearShoppingList();">Delete</a>
+            <a href="javascript:CollectToStore();">
+                <span>Collect in Store</span></a>
+
+            <a class="spacer" href="javascript:void(0);">
+                <span>| </span>
+            </a>
+            <a href="javascript:HomeDelivery();">
+                <span>Home Delivery</span></a>
+        </div>
+    </div>
+
+    @Html.Partial("CollectToShop")
+    @Html.Partial("HomeDelivery")
+    @for (int kartCnt = 1; kartCnt <= Model.Count(); kartCnt++)
+    {
+        <div class="shopping-body clearfix">
+            <div class="tilebox">
+                <table width="100%">
+
+                    <tr>
+                        <td width="15%">
+                            <img src="@Url.Content(Model.ToList()[kartCnt - 1].Product_ImgUrl)" border="0" alt=@Model.ToList()[kartCnt - 1].Product /></td>
+
+                        <td width="50%">
+                            <p class="pro-name">@Model.ToList()[kartCnt - 1].Product <span>(@Model.ToList()[kartCnt - 1].Volume )</span>
+                            </p>
+                            <p class="pro-amt">
+                                <span class="redcolor">£@Model.ToList()[kartCnt - 1].OfferRate </span>
+                                @if (!string.IsNullOrWhiteSpace(Model.ToList()[kartCnt - 1].Previous_Prize))
+                                {
+                                    if (Convert.ToDouble(Model.ToList()[kartCnt - 1].Previous_Prize) > 0)
+                                    {
+                                    <span style="color: #000;">(Was <span class="line-through">£@Model.ToList()[kartCnt - 1].Previous_Prize </span>)</span>
+                                    }
+                                }
+                            </p>
+                            @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.ToList()[kartCnt - 1].Offer_Date)))
+                            {
+                                <p class="pro-offer">
+                                    Offer Valid Until: <span class="redcolor">@Model.ToList()[kartCnt - 1].Offer_Date </span>|  
+                                <a href="javascript:void(0);" onclick="DeleteProduct_ShoppingList('@Model.ToList()[kartCnt - 1].Product','@Model.ToList()[kartCnt - 1].Volume','@Model.ToList()[kartCnt - 1].ShopId' );">Delete</a>
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="pro-offer">
+                                    <a href="javascript:void(0);" onclick="DeleteProduct_ShoppingList('@Model.ToList()[kartCnt - 1].Product','@Model.ToList()[kartCnt - 1].Volume','@Model.ToList()[kartCnt - 1].ShopId' );">Delete</a>
+                                </p>
+                            }
+                        </td>
+                        <td width="25%">
+                            <p class="qty-control">
+                                <input type="button" value="" class="qty-minus"  onclick= "@("Update_ShoppingList('" + Model.ToList()[kartCnt - 1].Product + "','" + Model.ToList()[kartCnt - 1].Volume + "', '" + Model.ToList()[kartCnt - 1].ShopId + "', '" + Convert.ToString(Convert.ToInt32(Model.ToList()[kartCnt - 1].Qty) - 1) + "')")"/>
+                                <input type="text" id="lblQty" value =" @Model.ToList()[kartCnt - 1].Qty" class="qty-text" readonly="true" />
+                                <input type="button" value="" class="qty-plus" onclick= " @("Update_ShoppingList('" + Model.ToList()[kartCnt - 1].Product + "','" + Model.ToList()[kartCnt - 1].Volume + "   ', '" + Model.ToList()[kartCnt - 1].ShopId + "', '" + Convert.ToString(Convert.ToInt32(Model.ToList()[kartCnt - 1].Qty) + 1) + "')")"/>
+                            </p>
+                        </td>
+
+                        <td>
+                            <p>£@Model.ToList()[kartCnt - 1].Total </p>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+    <div class="shopping-footer">
+        <table width="100%">
+            <tr>
+                <td width="50%" class="first">
+                    @*  <a href="javascript:void(0);" class="closebtn redcolor">Clear My Shopping List</a>*@
+                </td>
+                <td class="last">
+                    <p>Total: <span>£@Model.Sum(m => m.Total)</span></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<div class="rightnav ">
+    <a href="#">
+        <img src="../../img/rgt-ad-img.jpg" border="0" alt="" style="display: block;" /></a>
+</div>

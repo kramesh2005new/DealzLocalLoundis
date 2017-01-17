@@ -1,0 +1,164 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    ViewBag.Title = "Offers in Local Shops";
+    Layout = "~/Areas/Mobile/Views/Shared/_LayoutPublic.cshtml";
+   
+}
+<script type="text/javascript">
+
+    function redirectLocalShopPublicSearch(ctrl) {
+        var localShopID = $(ctrl).attr("shop-id");
+        //var localShopID = this.children[2].innerText.trim().toString();
+        window.location.href = "@(Url.Action("Searchresult", "Public"))" + "?cashandcarry=" + localShopID + "&browser=full";
+        //getresult("", localShopID, 'partial');
+    }
+
+    function updateQueryStringParameter(uri, key, value) {
+
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    function ccclick() {
+        //        debugger;
+        //                var url = window.location.href;
+        //        
+        //        if ($(this).children("input:first")[0]) {
+        //            var newSrc = $(this).children("input:first")[0].value;
+        //            var JQVal = $("#query").val();
+        //            getresult("", "1", 'partial');
+        //        }
+
+        //        $(".retailermenu li").each(function (idx, li) {
+        //            $(li).removeClass("TradeIndexShopsDiv");
+        //            $(li).addClass("liMenu1");
+        //        });
+        //        $(this).addClass("TradeIndexShopsDiv");
+        //var separator = url.indexOf('?') !== -1 ? "&" : "?";
+        //if(url.toLowerCase().indexOf("cashandcarry") >= 0)
+        //{
+        //window.location.href = updateQueryStringParameter(url,"cashandcarry",newSrc);
+        //}
+        //else{
+        //window.location.href=window.location.href+"public/Searchresult"+separator+"cashandcarry="+newSrc;
+        //}
+    }
+
+    function SearchClick(button) {
+        var postCode = document.getElementById('txtPostCode').value.toString().replace(/\s/g, '');
+        if (postCode == "") {
+            alert("Please enter any valid PostCode. eg: 'E6 1BS'");
+            return false;
+        }
+        window.location = "@(Url.Action("DirectPublic", "Public"))" + "?PostCode=" + postCode;
+}
+
+
+
+</script>
+@{
+    <body>
+        <div id="locationdiv" align="center" style="float: left; background-color: white;">
+
+            @*<img src="@Url.Content("~/images/location.png")"  alt=""  style="width: 15px;height:20px;"/>
+                   @if (Model.PostCodeToDisplayInPublicIndex != null)
+                    {  <span style="font-family: 'Meiryo UI'; font-size: 12px;"> 
+                    My Postcode:
+                        <input type="text" id="txtPostCode" value="@Model.PostCodeToDisplayInPublicIndex" title="eg. AB101XG" onload="this.focus();" maxlength="8"
+                        placeholder="e.g. AB101XG" style="width: 30%; padding-left: 0px; text-align: center;
+                        text-transform: uppercase;" />
+                    </span>
+                        IdealMall.Common.Common.GeneralUserPostCode = Model.PostCodeToDisplayInPublicIndex;
+                        }
+                    else
+                    { 
+                        <span style="font-family: 'Meiryo UI'; font-size: 12px;"> 
+                    My Postcode:
+                        <input type="text" id="txtPostCode" value="" title="eg. AB101XG" onload="this.focus();" maxlength="8"
+                        placeholder="e.g. AB101XG" style="width: 30%; padding-left: 0px; text-align: center;
+                        text-transform: uppercase;" />
+                    </span>
+                    }*@
+            @* <input id="btnSearch" value="Go" onclick="SearchClick();" type="button"
+                        style="font-family: 'Calibri'; font-size: 15px; background: #DC4517; color: White; width: 70px;" />*@
+        </div>
+
+        @if (Model.AllLocalShops.Count > 0)
+        {
+@*<span style="font-family: 'Meiryo UI';float:left; font-size: 12px;"> Showing <span
+                        style="font-weight: bolder;">@Model.AllLocalShops.Count
+                    </span>shops which are close to you: </span>
+                    <br />*@
+            <div class="result">
+                <b>Showing @Model.AllLocalShops.Count shops which are close to you </b>
+            </div>
+        }
+
+
+        @for (int i = 0; i < Model.AllLocalShops.Count; i++)
+        {
+
+
+            <div class="shop-det">
+                <div class="imgbox">
+                    <img src="@Url.Content(Model.AllLocalShops[i].ImgUrl)" alt="@Model.AllLocalShops[i].Name" border="0" />
+                    <img src="@Url.Content("~/images/thumb-img.jpg")" alt="companylogo" border="0" />
+                </div>
+                <div class="details">
+                    <p><b>Distance from your post code:  @Model.AllLocalShops[i].Miles miles</b></p>
+                    <p>@Model.AllLocalShops[i].Address</p>
+                    <p><b>
+                        <label>@Model.AllLocalShops[i].Services_Text</label></b></p>
+                    <p class="offerbox">
+                        <a class="offerbtn" onclick=" redirectLocalShopPublicSearch(this); "  shop-id="@Model.AllLocalShops[i].ID">View offers
+                        </a>
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+@* <div class="shadow" >
+                                    <div>
+                                        <table width="100%">
+                                            <tr>
+                 
+                                                <td align="left">
+                                                    <img src="@Url.Content(Model.AllLocalShops[i].ImgUrl)" style="padding-right:5px; width:130px"  alt="@Model.AllLocalShops[i].Name" />
+
+                                                </td>
+                                                <td>
+                    
+                                                    <div >
+                                                        <h1> @Model.AllLocalShops[i].Name </h1>
+                                                        <span>
+                                                            @Model.AllLocalShops[i].Address
+                                                        </span>
+                                                    </div>
+                                                    <br />
+                                                    <div  style="vertical-align:bottom; text-align:center; display: inline;">
+                                                        <a class=" restsStatusOpen" style="width:80%"  
+                                                           title="Compare Price" shop-id="@Model.AllLocalShops[i].ID" 
+                                                           onclick="redirectLocalShopPublicSearch(this);" ><b>View Offers </b></a>
+                                              
+                                                    </div>
+                                                    <span style="font-family: 'Meiryo UI';float:right;display:inline; font-size: 9px;">Distance from your postcode:
+                                                        @Model.AllLocalShops[i].Miles Miles</span>
+                                            
+                                                </td>
+                                            </tr></table>
+                                    </div>
+                                </div>
+                                <br />  *@
+
+
+        }
+        
+
+    </body>
+}

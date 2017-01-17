@@ -1,0 +1,143 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    ViewBag.Title = "Offers in Cash and Carry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+
+    function redirectTradeSearch(ctrl) {
+        var localShopId = $(ctrl).attr("shop-id");
+        getresult("", localShopId, 'partial');
+    }
+
+    $(document).ready(
+function () {
+});
+    function updateQueryStringParameter(uri, key, value) {
+
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    function ccclick() {
+    }
+</script>
+
+@{
+    <body>
+        <table class="tradetable" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td class="tradename">
+                    <label>Monthly Promotion</label></td>
+                <td class="tradename">
+                    <label>Weekly Promotion</label></td>
+                 <td class="tradename">
+                    <label>Non Promotion</label></td>
+            </tr>
+            <tr>
+                <td class="tradeproduct">
+
+                    @for (int i = 0; i < Model.CashandCarry.Count; i++)
+                    {
+                        if (Model.CashandCarry[i].Type == "M")
+                        {
+                            Model.CashandCarry[i].ImgUrl = Model.CashandCarry[i].ImgUrl.Replace("~/images/CashAndCarry/", "~/images/CashAndCarry/CashAndCarryLogos/");
+                        <a href="javascript:void(0);" shop-id="@Model.CashandCarry[i].ID" onclick="redirectTradeSearch(this);">
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                <label class="blink_me pro-info">Live &#8681;</label> 
+                            }
+                            else
+                            {
+                                <label class="blink_me pro-info">&nbsp;</label> 
+                            }
+                            <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)" alt="@Model.CashandCarry[i].Name" border="0"/>
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                
+                                <label class="pro-red-info">Exp on : @Model.CashandCarry[i].Expiry_Date  </label>
+                            }
+                            else
+                            {
+                                <label class="pro-red-info">&nbsp;</label>
+                            }
+                        </a>
+                        }
+                    }
+                </td>
+                <td class="tradeproduct">
+
+                    @for (int i = 0; i < Model.CashandCarry.Count; i++)
+                    {
+                        if (Model.CashandCarry[i].Type == "W")
+                        {
+                            Model.CashandCarry[i].ImgUrl = Model.CashandCarry[i].ImgUrl.Replace("~/images/CashAndCarry/", "~/images/CashAndCarry/CashAndCarryLogos/");
+                              
+                        <a href="javascript:void(0);" shop-id="@Model.CashandCarry[i].ID" onclick="redirectTradeSearch(this);">
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                <label class="blink_me pro-info">Live &#8681;</label>
+                            }
+                            else
+                            {
+                                <label class="pro-red-info">&nbsp;</label>
+                            }
+                            <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)" alt="@Model.CashandCarry[i].Name" border="0"/>
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                
+                                <label class="pro-red-info">Exp on : @Model.CashandCarry[i].Expiry_Date  </label>
+                            }
+                            else
+                            {
+                                <label class="pro-red-info">&nbsp;</label>
+                            }
+
+
+                        </a>
+                        }
+                    }
+                </td>
+                <td class="tradeproduct">
+
+                    @for (int i = 0; i < Model.CashandCarry.Count; i++)
+                    {
+                        if (Model.CashandCarry[i].Type == "P")
+                        {
+                            Model.CashandCarry[i].ImgUrl = Model.CashandCarry[i].ImgUrl.Replace("~/images/CashAndCarry/", "~/images/CashAndCarry/CashAndCarryLogos/");
+                              
+                        <a href="javascript:void(0);" shop-id="@Model.CashandCarry[i].ID" onclick="redirectTradeSearch(this);">
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                <label class="pro-info">Live &#8681;</label>
+                            }
+                            else
+                            {
+                                <label class="pro-red-info">&nbsp;</label>
+                            }
+                            <img src="@Url.Content(Model.CashandCarry[i].ImgUrl)" alt="@Model.CashandCarry[i].Name" border="0"/>
+                            @if (Model.CashandCarry[i].LiveAvailable == "Y")
+                            {
+                                
+                                <label class="pro-red-info">Exp on : @Model.CashandCarry[i].Expiry_Date  </label>
+                            }
+                            else
+                            {
+                                <label class="pro-red-info">&nbsp;</label>
+                            }
+
+
+                        </a>
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </body>
+}

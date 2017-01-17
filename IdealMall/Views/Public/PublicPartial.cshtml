@@ -1,0 +1,92 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    Layout = null;
+    ViewBag.ID = "Home";
+}
+<script type="text/javascript">
+    function redirectLocalShopPublicSearch(ctrl) {
+        var localShopID = $(ctrl).attr("shop-id");
+        getresult("", localShopID, 'partial');//Will call the method in LayoutPublic.cshtml 
+        selectskin();
+
+        charcountspan();
+
+    }
+</script>
+@{
+    <div class="filterblock">
+        <div class="filter-result">
+            <span class="posticons"></span>
+            <p>Showing @Model.AllLocalShops.Count Shops that close to you (<span id="postcode-result">@ViewBag.PublicUserPostCode</span>)</p>
+        </div>
+    </div>
+    if (Model.PostCodeToDisplayInPublicIndex != null)
+    {
+        IdealMall.Common.Common.GeneralUserPostCode = Model.PostCodeToDisplayInPublicIndex;
+    }
+    <ul>
+        @for (int i = 0; i < Model.AllLocalShops.Count; i++)
+        {
+            <li>
+                <div class="block">
+                    <div class="companyname">
+                        <div class="campanylogo-address">
+                            <img src= "@Url.Content(Model.AllLocalShops[i].ImgUrl)" alt="@Model.AllLocalShops[i].Name" />
+                            <label class="blink_me clearfix">@Model.AllLocalShops[i].Shop_Orginal_Name</label>
+                            <div class="address">@Model.AllLocalShops[i].Address.Replace("</b>", "")</div>
+                        </div>
+                        <div class="distance floatright">
+                            Distance from your Post Code:
+                               <span>@Model.AllLocalShops[i].Miles Miles</span><br />
+                            <span class="ph-number">@Model.AllLocalShops[i].PhoneNumber </span>
+                        </div>
+                    </div>
+                    <div class="companydetails">
+                        <div class="detoffer clearfix">
+                            <div class="detone">
+                                <b>
+                                    <label>@Model.AllLocalShops[i].Services_Text</label></b>
+                            </div>
+                            <div class="offer">
+                                <a href="javascript:void(0);" shop-id="@Model.AllLocalShops[i].ID" onclick="redirectLocalShopPublicSearch(this);">
+                                    <span>View Offer</span>
+                                </a>
+                            </div>
+                        </div>
+                        <table cellspacing="0" cellpadding="0" width="100%">
+                            <tr>
+                                <td class="companytd">
+                                    <div class="companyimage">
+                                        <img src="@Url.Content(@Model.AllLocalShops[i].Shop_ImgUrl)"  alt="company1" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="services">
+                                        @if (!string.IsNullOrWhiteSpace(Model.AllLocalShops[i].Services))
+                                        {
+                                            string services = Model.AllLocalShops[i].Services;
+                                            string[] servicesArr = services.Split(',');
+                                            if (servicesArr != null && servicesArr.Length > 0)
+                                            {
+                                                for (int j = 0; j < servicesArr.Length; j++)
+                                                {
+                                            <img src="@Url.Content("~/Images/Services/" + servicesArr[j] + ".jpg")"  border="0" alt=@Url.Content(servicesArr[j]) />
+                                                }
+                                            }
+
+                                        }
+                                    </div>
+                                </td>
+                                <td style="text-align: right;">
+                                    <div class="timinghours">
+                                        <img src="@Url.Content("~/Images/Services/" + @Model.AllLocalShops[i].Shopping_Timing + ".jpg")"  alt="Opening Hours" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}

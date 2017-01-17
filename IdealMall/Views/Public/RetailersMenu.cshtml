@@ -1,0 +1,111 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+
+    function redirectLocalShopPublicSearch(ctrl) {
+        $.colorbox.close();
+        var localShopID = $(ctrl).attr("shop-id");
+        getresult($("#query").val(), localShopID, null);
+        var localShopName = $(ctrl).attr("shop-name");
+        $("#companyproduct").text(localShopName);
+        $("#selectedcompany").val(localShopID);
+        $("#companies").children().css("background-color", "#eeeeee");
+        $(ctrl).closest("div.companyname").css("background-color", "lavenderblush");
+
+    };
+
+    function oncolorboxclick() {
+        $.colorbox({ href: '#companies', inline: true, width: '640px', opacity: 0.50, escKey: true, overlayClose: false });
+    }
+</script>
+
+@{
+    
+@*    <div class="filterblock">
+        <div class="filter-result">
+            <span class="posticons"></span>
+            <div class="changeLocation">
+                <a class="companypopup"  id="companyproduct" title="List of Companies" onclick="oncolorboxclick()">                    
+                    View All Cash and Carrys
+                </a>
+                <input type="hidden" id="selectedcompany"/>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="filterblock">
+        <div class="filter-result">
+            <span class="posticons"></span>
+            <div class="changeLocation">
+
+                <select  name="companyproduct" style="width: 170px;" onclick="oncolorboxclick()">
+                    <option id ="companyproduct"  value="0" selected="selected">View All Local Shops</option>
+                    
+                </select>
+
+                <input type="hidden" id="selectedcompany" />
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;">
+
+        <div id="companies">
+            @if (ViewBag.cc == 0)
+            {
+                <script>
+                    $("#companyproduct").text("View All Local Shops");
+                </script>                
+            }
+            <div class="viewallcom">
+                <div class="offer">
+                    <a href="javascript:void(0);" shop-id="0" shop-name="View All Local Shops" onclick=" redirectLocalShopPublicSearch(this); ">View All Local Shops Offers </a>
+                </div>
+            </div>
+
+
+            @for (int i = 0; i < Model.AllLocalShops.Count; i++)
+            {
+                if (ViewBag.cc == Model.AllLocalShops[i].ID)
+                {
+                <script>
+                    $("#companyproduct").text("@Model.AllLocalShops[i].Name");
+                    $("#selectedcompany").val("@Model.AllLocalShops[i].ID");
+                </script>
+                <div class="companyname" style="background-color: lavenderblush">
+                    <div class="campanylogo-address">
+                        <img src="@Url.Content(Model.AllLocalShops[i].ImgUrl)" border="0" alt="company1" />
+                        <div class="address">@Model.AllLocalShops[i].Address.Replace("</b>", "")</div>
+                    </div>
+                    <div class="distance floatright">
+                        <p>Distance from your Post Code: <span>@Model.AllLocalShops[i].Miles Miles</span></p>
+                        <div class="offer">
+                            <a href="javascript:void(0);" shop-id="@Model.AllLocalShops[i].ID" shop-name="@Model.AllLocalShops[i].Name" onclick=" redirectLocalShopPublicSearch(this); ">View Offer</a>
+                        </div>
+                    </div>
+                </div>
+                }
+                else
+                {
+                <div class="companyname">
+                    <div class="campanylogo-address">
+                        <img src="@Url.Content(Model.AllLocalShops[i].ImgUrl)" border="0" alt="company1" />
+                        <div class="address">@Model.AllLocalShops[i].Address.Replace("</b>", "")</div>
+                    </div>
+                    <div class="distance floatright">
+                        <p>Distance from your Post Code: <span>@Model.AllLocalShops[i].Miles Miles</span></p>
+                        <div class="offer">
+                            <a href="javascript:void(0);" shop-id="@Model.AllLocalShops[i].ID" shop-name="@Model.AllLocalShops[i].Name" onclick=" redirectLocalShopPublicSearch(this); ">View Offer</a>
+                        </div>
+                    </div>
+                </div>
+                }
+            }
+
+
+        </div>
+    </div>
+}

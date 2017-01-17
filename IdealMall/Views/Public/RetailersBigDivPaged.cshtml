@@ -1,0 +1,330 @@
+﻿@using IdealMall.Entities
+@using PagedList
+
+
+@model IPagedList<IdealMall.Entities.PublicOffer>
+@{
+    if (!ViewBag.Browser)
+    {
+        Layout = null;
+    }
+    
+}
+<style type="text/css">
+    .productbox
+    {
+        width: auto;
+    }
+</style>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.elevateZoom-3.0.8.min.js")"></script>
+<script type="text/javascript">
+
+    $(document).ready(
+
+        function () {
+
+            totalpages = '@ViewBag.pages';
+            $("#selectedcompany").val('@ViewBag.Mode');
+
+        });
+
+
+    $(".pager a").click(function (e) {
+        e.preventDefault();
+        var txt = $(e.target).text();
+        if (txt == '«') {
+            txt = $(".current").text();
+            var numPrev = parseInt(txt);
+            numPrev -= 1;
+            txt = numPrev;
+        }
+        if (txt == '»') {
+            txt = $(".current").text();
+            var numNext = parseInt(txt);
+            numNext += 1;
+            txt = numNext;
+        }
+        refreshproducts("@ViewBag.cc", txt);
+    });
+
+    $("[data-role='Qty']").keydown(function (e) {
+        if (e.keyCode == 13) {
+            AddToShoppingList(this);
+            return;
+        }
+        // Allow: backspace, delete, tab, escape and enter
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+            // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        } x
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+<table cellpadding="0" class="product-table" cellspacing="0" border="0" width="100%">
+    <tr class ="pagination">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount
+        &nbsp;
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("<<", "Searchresult", new { page = 1, query = ViewBag.searchtext, browser = "", view = "", cashandcarry = "1", Mode = ViewBag.Mode })
+        @Html.Raw("&nbsp;");
+        @Html.ActionLink("< Prev", "Searchresult", new { page = Model.PageNumber - 1, query = ViewBag.searchtext, browser = "", view = "", cashandcarry = "1", Mode = ViewBag.Mode })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw("&nbsp;");
+        @:< Prev
+    }
+        &nbsp;
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Next >", "Searchresult", new { page = Model.PageNumber + 1, query = ViewBag.searchtext, browser = "", view = "", cashandcarry = "1", Mode = ViewBag.Mode })
+        @Html.Raw("&nbsp;");
+        @Html.ActionLink(">>", "Searchresult", new { page = Model.PageCount, query = ViewBag.searchtext, browser = "", view = "", cashandcarry = "1", Mode = ViewBag.Mode })
+    }
+    else
+    {
+        @:Next >
+        @Html.Raw("&nbsp;")
+        @:>>
+    }
+    </tr>
+    @{
+        int index = 0;
+        var offers = Model.ToList();
+
+        for (int i = 0; i < offers.Count; i++)
+        {
+        <tr class="product-block">
+            <td class="productbox">
+                @*  <div class="companyname">
+                    <img src="@Url.Content(offers[i].Shop.ImgUrl)" border="0" alt="@offers[i].Shop.Name" />
+                </div>*@
+                <div class="productdetails">
+                    <h1>
+                        @if (offers[i].Product.Length > 41)
+                        {
+                            <span data-role="product">@offers[i].Product</span><span style="display: inline"> (@offers[i].Volume) </span>
+                        }
+                        else
+                        {
+                            <span data-role="product">@offers[i].Product</span><span style="display: block"> (@offers[i].Volume) </span>
+                        }
+
+                    </h1>
+
+
+                    <div class="pro-details">
+                        @if (offers[i].OfferRate != 0)
+                        {
+                            string strSellPrice = string.Empty;
+                            if (Convert.ToDecimal(offers[i].OfferRate) < 1)
+                            {
+                                strSellPrice = (Convert.ToDecimal(offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                strSellPrice = "£" + offers[i].OfferRate;
+                            }
+                            string strSell = string.Empty;
+                           
+                            <h2><span>@strSellPrice</span></h2>
+                            if (Convert.ToString(offers[i].Previous_Prize) != string.Empty)
+                            {
+                                if (Convert.ToDecimal(offers[i].Previous_Prize) > 0)
+                                {
+                            <h2 class="rmbold">(Was <span class="line-through">£ @offers[i].Previous_Prize</span>)</h2>
+
+                                }
+                            }
+                        }
+
+
+                    </div>
+                    <div class="pro-image">
+                        <a class="magnifierbtn" href="@Url.Content(offers[i].ImageURL)">
+                            <span class="zoombtn"></span>
+                            <img src="@Url.Content(offers[i].ImageURL)" border="0" alt="@offers[i].Product " /></a>
+                    </div>
+                    <div class="qty-cart">
+                        <div class="input afix">
+                            <label>Quantity</label>
+                            <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                        </div>
+                        <div class="cart">
+                            <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                            <input type="hidden" data-role="shopid" value="@offers[i].Shop.ID" />
+                            <input type="hidden"  data-role="vat" value="@offers[i].VAT" />
+                            <input type="hidden" data-role="offerrate" value="@offers[i].OfferRate" />
+                            <input type="hidden"  data-role="volume" value="@offers[i].Volume" />
+                        </div>
+                    </div>
+                    @if ((offers[i].Offer_Mode == "M" || offers[i].Offer_Mode == "W") && offers[i].OfferEnddate != string.Empty)
+                    {
+                        <h3>Offer valid until: <span>@offers[i].OfferEnddate</span></h3>
+                    }
+                </div>
+            </td>
+            <td style="width: 15px;"></td>
+
+            @if (i++ < offers.Count - 1)
+            {
+                <td class="productbox">
+                    @*<div class="companyname">
+                        <img src="@Url.Content(offers[i].Shop.ImgUrl)" border="0" alt="@offers[i].Shop.Name" />
+                    </div>*@
+                    <div class="productdetails">
+                        <h1>
+                            @if (offers[i].Product.Length > 41)
+                            {
+                                <span data-role="product">@offers[i].Product</span><span style="display: inline"> (@offers[i].Volume) </span>
+                            }
+                            else
+                            {
+                                <span data-role="product">@offers[i].Product</span><span style="display: block"> (@offers[i].Volume) </span>
+                            }
+                        </h1>
+
+                        <div class="pro-details">
+                            @if (offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + offers[i].OfferRate;
+                                }
+                                <h2><span>@strSellPrice</span></h2>
+                                if (Convert.ToString(offers[i].Previous_Prize) != string.Empty)
+                                {
+                                    if (Convert.ToDecimal(offers[i].Previous_Prize) > 0)
+                                    {
+                                <h2 class="rmbold">(Was <span class="line-through">£ @offers[i].Previous_Prize</span>)</h2>
+
+                                    }
+                                }
+                            }
+
+                        </div>
+                        <div class="pro-image">
+                            <a class="magnifierbtn" href="@Url.Content(offers[i].ImageURL)">
+                                <span class="zoombtn"></span>
+                                <img src="@Url.Content(offers[i].ImageURL)" border="0" alt="@offers[i].Product " /></a>
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input afix">
+                                <label>Quantity</label>
+                                <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                                <input type="hidden" data-role="shopid" value="@offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if ((offers[i].Offer_Mode == "M" || offers[i].Offer_Mode == "W") && offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@offers[i].OfferEnddate</span></h3>
+                        }
+
+                    </div>
+                </td>
+                <td style="width: 15px;"></td>
+            }
+
+            @if (i++ <= offers.Count - 2)
+            {
+                <td class="productbox">
+                    @* <div class="companyname">
+                        <img src="@Url.Content(offers[i].Shop.ImgUrl)" border="0" alt="@offers[i].Shop.Name" />
+                    </div>*@
+                    <div class="productdetails">
+                        <h1>
+                            @if (offers[i].Product.Length > 41)
+                            {
+                                <span data-role="product">@offers[i].Product</span><span style="display: inline"> (@offers[i].Volume) </span>
+                            }
+                            else
+                            {
+                                <span data-role="product">@offers[i].Product</span><span style="display: block"> (@offers[i].Volume) </span>
+                            }
+                        </h1>
+                        <div class="pro-details">
+                            @if (offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + offers[i].OfferRate;
+                                }
+                            
+                                <h2><span>@strSellPrice</span></h2>
+                                if (Convert.ToString(offers[i].Previous_Prize) != string.Empty)
+                                {
+                                    if (Convert.ToDecimal(offers[i].Previous_Prize) > 0)
+                                    {
+                                <h2 class="rmbold">(Was <span class="line-through">£ @offers[i].Previous_Prize</span>)</h2>
+
+                                    }
+                                }
+
+                            }
+
+
+
+                        </div>
+                        <div class="pro-image">
+                            <a class="magnifierbtn" href="@Url.Content(offers[i].ImageURL)">
+                                <span class="zoombtn"></span>
+                                <img src="@Url.Content(offers[i].ImageURL)" border="0" alt="@offers[i].Product " /></a>
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input afix">
+                                <label>Quantity</label>
+
+
+                                <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                                <input type="hidden" data-role="shopid" value="@offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if ((offers[i].Offer_Mode == "M" || offers[i].Offer_Mode == "W") && offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@offers[i].OfferEnddate</span></h3>
+                        }
+
+                    </div>
+                </td>
+            }
+        </tr>
+        <tr>
+            <td style="height: 15px;" colspan="5"></td>
+        </tr>
+        }
+    
+    }
+</table>

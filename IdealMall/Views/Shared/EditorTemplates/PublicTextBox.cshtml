@@ -1,0 +1,22 @@
+﻿@model string
+@{
+    Layout = null;
+    String styleAttribute = @"display: inline;font-weight: 700;line-height: 1;
+color: #fff;text-align: center;white-space: nowrap;vertical-align: baseline;
+border-radius: .25em;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:red;width:auto;";               
+                                                         
+}
+
+<div class="uiStickyPlaceholderInput uiStickyPlaceholderEmptyInput">
+    <span style="@styleAttribute">@Html.ValidationMessageFor(m => m)</span>
+    @if (ViewData.ModelMetadata.DataTypeName == "Password")
+    {
+        @Html.PasswordFor(m => m, new { @class = "main-form", @placeholder = ViewData.ModelMetadata.DisplayName, @autocomplete = "off" })
+    }
+    else
+    {   
+        @Html.TextBoxFor(m => m, new { @class = "main-form", @placeholder = ViewData.ModelMetadata.DisplayName, @autocomplete = "off" })
+    }
+        
+</div>
+    

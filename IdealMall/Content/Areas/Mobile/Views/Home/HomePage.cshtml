@@ -1,0 +1,165 @@
+﻿@{
+    ViewBag.Title = "HomePage";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Home</title>
+    <link rel="shortcut icon" type="image/x-icon" />
+    <link href="@Url.Content("~/Content/resetmobile.css")" rel="stylesheet" type="text/css" media="all" />
+    <link href="@Url.Content("~/Content/stylemobile.css")" rel="stylesheet" type="text/css" media="all" />
+    <script src="@Url.Content("~/Scripts/jquery-1.8.0.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.11.min.js")" type="text/javascript"></script>
+    <link href="@Url.Content("~/Content/themes/base/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#txtPostCode").autocomplete({
+                source: function (request, response) {
+                    var customer = new Array();
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.Action("GetPostCodeSuggestions", "Public"))",
+                        data: { "PostCode": request.term },
+                        success: function (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                customer[i] = { label: data[i].Value, Id: data[i].Key };
+                            }
+                        }
+                    });
+                    response(customer);
+                },
+                select: function (event, ui) {
+                    $("#txtPostCode").val(ui.item.label);
+                    SearchClick(null);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 401) {
+                        window.location.href = "@(Url.Action("PublicLogin", "Public"))";
+                        }
+                    }
+
+
+            });
+            $("#txtPostCode").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    SearchClick();
+                }
+            });
+        });
+
+            function SearchClick() {
+                var postCode = document.getElementById('txtPostCode').value.toString().replace(/\s/g, '');
+                var radius = document.getElementById('radiusSelector').value.toString();
+
+                if (postCode == "") {
+                    alert("Please enter any valid PostCode. eg: E149GE");
+                    return false;
+                }
+                window.location = "@Url.Action("DirectPublic", "Public")?PostCode=" + postCode + "&radius =" + encodeURIComponent(radius);
+            }
+
+            function OnRadiusChanged() {
+                var radius = document.getElementById('radiusSelector').value.toString();
+                var postCode = document.getElementById('txtPostCode').value.toString().replace(/\s/g, '');
+                if (radius != "" && postCode != "") {
+                    SearchClick();
+                }
+            }
+    </script>
+</head>
+<body>
+    <!----Header Starts--------------->
+    <header>
+        <a class="menubg" href="javascript:void(0);"></a>
+        <div id="menuWrapper">
+            <a class="close" href="javascript:void(0);"></a>
+            <nav><a href="javascript:void(0);">Sign In</a> <a href="javascript:void(0);">Create Account</a> <a href="javascript:void(0);">Download Apps</a> <a href="javascript:void(0);">Trade Customer Sign In</a> <a href="javascript:void(0);">Contact Us</a> </nav>
+        </div>
+        <a href="javascript:void(0);" class="logo"><span>Dealzlocal Logo</span></a>
+        <h2>Local Offers Online!</h2>
+        <label class="radius">
+            <input id="txtPostCode" placeholder="Eg: E149GE" type="text" class="txtbox" style="text-transform: uppercase;" />
+        </label>
+        <label class="select">
+            <select id="radiusSelector" name="awer" onchange="OnRadiusChanged()">
+                <option selected="selected">Radius</option>
+                <option value="50">less than 50</option>
+                <option value="5">less than 5</option>
+                <option value="10">less than 10</option>
+                <option value="15">less than 15</option>
+                <option value="20">less than 20</option>
+                <option value="20">less than 25</option>
+                <option value="20">less than 30</option>
+                <option value="20">less than 35</option>
+                <option value="20">less than 40</option>
+                <option value="20">less than 45</option>
+            </select>
+        </label>
+        <label class="FLD">
+            <input type="submit" value="Find Local Deals" onclick="SearchClick();" />
+        </label>
+    </header>
+    <!----Header Ends--------------->
+
+    <!----Section Starts--------------->
+    <section>
+        <div class="companylogo">
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/1.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/3.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/4.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/5.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/6.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/7.png")" alt="Shop"></a>
+            <a href="javascript:void(0);">
+                <img src="@Url.Content("~/images_mobile/8.png")" alt="Shop"></a>
+        </div>
+    </section>
+    <!----Section Ends--------------->
+    <!----Footer Starts--------------->
+    <footer>
+        <div class="footer clearfix">
+            <div class="lftfooter">
+            <p>@Html.ActionLink("Public Login", "LoginIndex", "home")</p>
+            <a href="javascript:void(0);">Sign up</a>
+            <a href="javascript:void(0);">Price Promise</a>
+            <a href="javascript:void(0);">Privacy Policy T&amp;Cs</a>
+                </div>
+            <div class="rgtfooter">
+            <p class="tradelogin">@Html.ActionLink("Trade Login", "TradeLogin", "Trade")</p>
+            <a href="javascript:void(0);">How do we use</a>
+            <a href="javascript:void(0);">Contact us</a>
+            <a href="javascript:void(0);">FAQs</a>
+            <a href="javascript:void(0);">Mobile Apps</a>
+                </div>
+        </div>
+        <div class="copyright">
+            <span>Powered by</span>
+            <a href="javascript:void(0);" title="Deal Z Local" class="footerlogo"></a>
+            <span class="floatleft">Copyright &copy; 2015</span>
+            <span class="floatleft">All Rights Reserved.</span>
+        </div>
+    </footer>
+    <a href="#" id="back-to-top" title="Back to top">&uarr;</a>
+    <!----Footer Ends--------------->
+
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.watermark.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/commonmobile.js")" type="text/javascript"></script>
+</body>
+</html>

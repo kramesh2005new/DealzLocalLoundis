@@ -1,0 +1,11 @@
+﻿@model string
+@{
+    Layout = null;
+}
+
+@Html.ValidationMessageFor(m => m, null, new {@style = "color:red; font-size: 30px;align:left;"})
+@Html.TextBoxFor(m => m, new {@style="width: 880px; height: 65px; font-size: 40px",
+                                   @class="",
+                                   @placeholder=  ViewData.ModelMetadata.DisplayName,
+                                   @autocomplete="off"})
+                                    

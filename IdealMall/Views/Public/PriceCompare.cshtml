@@ -1,0 +1,184 @@
+﻿@model IEnumerable<IdealMall.Entities.Offer>
+@{
+    Layout = null;
+}
+
+<link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" media="all" />
+<link href="@Url.Content("~/Content/reset.css")" rel="stylesheet" type="text/css" media="all" />
+<div>
+    <table width="100%" height="auto" style="color: black; border-collapse: separate; border-spacing: 0;">
+        <tr>
+            <td width="40%" style="border: 1px solid #ccc;" class="ui-corner-all" align="center">
+                <img src="@Url.Content(ViewBag.imageURL)" />
+            </td>
+
+
+            <td width="60%" style="font-size: small; font-size: 18px; vertical-align: top; color: #3e454d; text-align: center;">
+                @ViewData["ProductName"] (@Model.First().Volume)
+                                 
+            </td>
+        </tr>
+    </table>
+</div>
+<style type="text/css">
+    .pricecomparison
+    {
+        margin-top: 20px;
+    }
+
+        .pricecomparison tr:nth-child(1) td
+        {
+            background: #ce0b10;
+            color: #fff;
+            padding: 5px;
+            text-align: left;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .pricecomparison tr:nth-child(2n+1)
+        {
+            background: #ffeeef;
+        }
+
+        .pricecomparison td
+        {
+            border: 1px solid #ce0b10;
+            padding: 5px;
+            text-align: left;
+        }
+</style>
+<div>
+    <table class="pricecomparison" width="100%">
+
+        @for (int shopCnt = 0; shopCnt <= Model.Count(); shopCnt++)
+        {
+            <tr style="@(shopCnt == 0 ? "border-top-style:solid;border-top-width:thin;border-bottom-style:solid;border-bottom-width:thin" : "")">
+                <td width="20%" style="text-align: center; font-weight: bold;">@(shopCnt == 0 ?
+                            Html.LabelFor(m => m.FirstOrDefault().Shop.Name) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).Shop.Name))
+                </td>
+                @if (shopCnt == 0)
+                {
+                    <td width="20%" style="text-align: Center">@Html.LabelFor(m => m.FirstOrDefault().OfferRate)
+
+                    </td>
+                }
+                else
+                {
+                    <td width="20%" style="text-align: right">@Html.DisplayFor(m => m.ElementAt(shopCnt - 1).OfferRate)
+                    </td>
+                }
+
+
+                @if (shopCnt == 0)
+                {
+                    <td width="15%" style="text-align: Center">@Html.LabelFor(m => m.FirstOrDefault().Volume)
+
+                    </td>
+                }
+                else
+                {
+                    <td width="15%" style="text-align: right">@Html.DisplayFor(m => m.ElementAt(shopCnt - 1).Volume)
+                    </td>
+                }
+
+                <td width="30%">@(shopCnt == 0 ?
+                            Html.LabelFor(m => m.FirstOrDefault().Additional_offer) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).Additional_offer))
+                </td>
+                @if (shopCnt == 0)
+                {
+                    <td width="20%">ADD LIST
+                    </td>    
+                }
+                else
+                {
+                    <td width="20%" style="text-align: right">
+                        <div class="qty-cart">
+                            <div class="cart">
+                                <input type="text" value="1" data-role="Qty1" style="text-align: center;" />
+                                <a href="javascript:void(0);" class="addtocart" onclick="AddComparePriceToShoppingList(this);">+</a>
+                                <input type="hidden" data-role="shopid" value="@Model.ElementAt(shopCnt - 1).Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.ElementAt(shopCnt - 1).VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.ElementAt(shopCnt - 1).OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.ElementAt(shopCnt - 1).Volume" />
+                                <input type="hidden"  data-role="product" value="@Model.ElementAt(shopCnt - 1).Product" />
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+        }
+
+
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("[data-role='Qty1']").keydown(function (e) {
+            if (e.keyCode == 13) {
+                AddToShoppingList(this);
+                return;
+            }
+            // Allow: backspace, delete, tab, escape and enter
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+
+
+        });
+    })
+
+    function AddComparePriceToShoppingList(button) {
+
+        var divmain = $(button).parent().first();
+        var Qty = $(divmain).find("[data-role='Qty1']").val();
+        if (Qty != "") {
+            var volume = $(divmain).find("[data-role='volume']").val();
+            var shopid = $(divmain).find("[data-role='shopid']").val();
+            var vat = $(divmain).find("[data-role='vat']").val();
+            var offerrate = $(divmain).find("[data-role='offerrate']").val();
+            var product = $(divmain).find("[data-role='product']").val();
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("AddToShoppingList", "Public"))",
+                data: { "UserId": "IdealMall", "Shop_ID": shopid, "Offer_Rate": offerrate, "Product": product, "Qty": Qty, "VAT": vat, "Volume": volume },
+                success: function (data) {
+                    if (data == "-1") {
+                        alert("Please login before adding to shopping list.");
+                        return false;
+                    }
+                    //$(divmain).find("[data-role='loading']").hide();
+                    $("#shoppinglistcount").animate({
+                        'font-size': "+12px"
+                    });
+                    $("#shoppinglistcount").text("(" + data + ")");
+
+                    alert(Qty + " added to Shopping list");
+                    $(divmain).find("[data-role='Qty1']").text = "1";
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert('Failed to retrieve states.');
+                }
+            });
+        }
+        else {
+            $(divmain).find("[data-role='Qty1']").addClass("required");
+        }
+    }
+
+
+</script>

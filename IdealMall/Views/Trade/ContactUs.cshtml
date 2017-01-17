@@ -1,0 +1,208 @@
+﻿@model IdealMall.Entities.TradeUser
+@{
+    ViewBag.Title = "Contact Us";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 8]> <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if IE 9]> <html class="no-js ie9 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class='no-js' lang='en'>
+<!--<![endif]-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Deal Z Local</title>
+    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+    <link href="../../Content/reset.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../Content/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="../../Content/colorbox.css" type="text/css" media="all" />
+
+    <script src="@Url.Content("../../Scripts/jquery.js")" type="text/javascript"></script>
+    <script src="@Url.Content("../../Scripts/jquery-ui.min.js")" type="text/javascript"></script>
+
+    <!--[if IE]>
+<link rel="stylesheet" href="css/ie.css" type="text/css" media="all" />
+<![endif]-->
+</head>
+
+<body>
+    <img id="loading" src='../../images/loader.gif' style="position: absolute; top: 50%; left: 50%; display: none;" />
+    <!----Header --------------->
+    <div class="headerbg">
+        <div class="pagewidth">
+            <div class="logo"><a href="index.html" title="Deal Z Local"><span>Deal Z Local Logo</span></a></div>
+            <div class="submenu">@Html.ActionLink("Trade Login", "TradeLogin", "Trade")</div>
+        </div>
+    </div>
+    <!----Header ends--------------->
+   
+    
+    <!----Form starts--------------->
+    <div class="pagewidthinner">
+        <div class="formbox clearfix">
+            <div class="contactus">
+                <h1>Contact Us</h1>
+                <h2>Send us a Message:</h2>
+
+                <div class="txtbox">
+                    <input type="text" class="jq_watermark" placeholder="Your Trade User ID  (Required)" name="txtYourName" id="yourname" />
+                </div>
+                <div class="txtbox">
+                    <input type="text" class="jq_watermark" placeholder="Your Email (Required)" name="txtYourName" id="email" />
+                </div>
+                <div class="txtbox">
+                    <input type="text" class="jq_watermark" placeholder="Subject (Required)" name="txtYourName" id="subject" />
+                </div>
+                <div class="txtbox">
+                    <textarea cols="75" rows="3" placeholder="Your Message (Required)" class="jq_watermark" name="txtYourName" id="message"></textarea>
+                </div>
+                @* <div class="captcha">
+      <img src="../images/captcha.jpg" border="0" alt="captcha"/>
+      </div>
+       <div class="txtbox">
+        <input type="text" class="jq_watermark" placeholder="Enter the code shown above"  name="txtYourName" id="captcha"/>
+      </div>*@
+                <div class="sbmtbtn clearfix">
+                    <input id="btnSubmit" type="submit" onclick="ProceedContact();" tabindex="4" class="sendmail" value="Send Mail" />
+                </div>
+
+            </div>
+            <div class="continfoimg">
+                <span class="text">Reach s:</span>
+                <div class="mail">EmailID: <a href="mailto:info@dealzlocal.co.uk">info@dealzlocal.co.uk</a></div>
+                <img src="../images/contactus-min.jpg" border="0" alt="Contact Us" />
+            </div>
+
+        </div>
+        <
+    </div>
+    <!----Form ends--------------->
+    <!----Footer Starts--------------->
+    <div class="footerbg clearfix">
+        <div class="pagewidthinner ">
+            <div class="copyright">
+                <div class="powered">Powered by</div>
+                <a href="javascript:void(0);" title="Deal Z Local" class="footerlogo"></a><span>&copy; 2015</span><span>|</span><a href="javascript:void(0);">Privacy Policy.</a><span>All Rights Reserved.</span>
+            </div>
+            <div class="linestr"></div>
+            <div class="footermenus">
+                <p>@Html.ActionLink("Trade Customer Login", "TradeLogin", "Trade")</p>
+                <p>@Html.ActionLink("Sign Up", "TradeSignIn", "Trade")</p>
+                <p><a href="javascript:void(0);">Price Promise</a></p>
+                <p><a href="javascript:void(0);">Privacy Policy T&amp;Cs</a></p>
+            </div>
+            <div class="linestr"></div>
+            <div class="footermenus">
+                <p class="loginbox-p">@Html.ActionLink("Public Customer Login", "LoginIndex", "home")</p>
+                @*   <p><a href="javascript:void(0);" class="tradelogin">Trade Customer Login</a></p>*@
+                <p><a href="javascript:void(0);">How do we use</a></p>
+                <p><a href="javascript:void(0);">Contact us</a></p>
+                <p><a href="javascript:void(0);">FAQs</a></p>
+                <p><a href="javascript:void(0);">Mobile Apps</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!----Footer Ends--------------->
+    <script type="text/javascript" src="../../Scripts/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.bxSlider.js"></script>
+    <script type="text/javascript" src="../../Scripts/custom-form-elements.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery.watermark.min.js"></script>
+    <script src="../../Scripts/common.js" type="text/javascript"></script>
+</body>
+
+</html>
+<script type="text/javascript">
+    function ProceedContact() {
+        if ($("#yourname").val() == "" || $("#email").val() == "" || $("#subject").val() == "" || $("#message").val() == "") {
+            alert("Please enter all the fields.");
+            return false;
+        }
+        else if (echeck($("#email").val()) == false) {
+            return false;
+        }
+        else {
+            $("#loading").css("display", "block");
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "/Trade/ContactUs",
+                data: {
+                    "yourname": $("#yourname").val(),
+                    "email": $("#email").val(),
+                    "subject": $("#subject").val(),
+                    "message": $("#message").val(),
+                },
+                success: function (data) {
+                    success(data);
+                    $("#loading").css("display", "none");
+                    if (data.indexOf("User ID") == -1) {
+                        window.location.href = "@(Url.Action("TradeLogin", "Trade"))";
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Error sending mail!");
+                    $("#loading").css("display", "none");
+                    window.location.href = "@(Url.Action("ContactUsIndex", "Trade"))";
+                }
+            });
+        }
+
+    }
+
+
+    function success(data) {
+        alert(data);
+    }
+
+    function echeck(str) {
+
+        var at = "@@";
+        var dot = ".";
+        var lat = str.indexOf(at);
+        var lstr = str.length;
+        var ldot = str.indexOf(dot);
+        if (str.indexOf(at) == -1) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.indexOf(at) == -1 || str.indexOf(at) == 0 || str.indexOf(at) == lstr) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.indexOf(dot) == -1 || str.indexOf(dot) == 0 || str.indexOf(dot) == lstr) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.indexOf(at, (lat + 1)) != -1) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.substring(lat - 1, lat) == dot || str.substring(lat + 1, lat + 2) == dot) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.indexOf(dot, (lat + 2)) == -1) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        if (str.indexOf(" ") != -1) {
+            alert("Invalid E-mail ID");
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+

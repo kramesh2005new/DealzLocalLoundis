@@ -1,0 +1,131 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+    //var fixmeTop = $('.retailermenu').offset().top;
+    $(document).ready(
+function () {
+    $(".retailermenu li").click(ccclick);
+
+    // Get initial position
+    //$(window).scroll(function() {            // Assign scroll event listener
+    //    var currentScroll = $(window).scrollTop(); // Get current position
+    //    if (currentScroll >= fixmeTop) { // Make it fixed if you've scrolled to it
+    //        $('.retailermenu').css({
+    //            position: 'fixed'
+    //           ,
+    //            top: '2px',
+    ////            left: '0'
+    //        });
+    //    } else {                       // Make it static if you scroll above
+    //        $('.retailermenu').css({
+    //            position: 'static'
+    //        });
+    //    }
+    //});
+
+});
+    function updateQueryStringParameter(uri, key, value) {
+
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+    function ccclick() {
+        var url = window.location.href;
+        if ($(this).children("input:first")[0]) {
+            var newSrc = $(this).children("input:first")[0].value;
+            getresult($("#query").val(), newSrc, null);
+        }
+        $(".retailermenu li").each(function (idx, li) {
+            $(li).removeClass("selectedretailmenu");
+            $(li).addClass("liMenu");
+        });
+        $(this).addClass("selectedretailmenu");
+        //var separator = url.indexOf('?') !== -1 ? "&" : "?";
+        //if(url.toLowerCase().indexOf("AllCashandCarrys") >= 0)
+        //{
+        //window.location.href = updateQueryStringParameter(url,"AllCashandCarrys",newSrc);
+        //}
+        //else{
+        //window.location.href=window.location.href+"trade/Searchresult"+separator+"AllCashandCarrys="+newSrc;
+        //}
+    }
+
+
+
+
+
+</script>
+@{
+    <ul class="retailermenu">
+        @if (ViewBag.cc == 0)
+        {
+            <li class="selectedretailmenu" style="text-align: center;">
+                <table style="width: 100%">
+                    <tr style="height: 50px; vertical-align: middle;text-align: center;">
+                        <td>
+                            All
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="0" /></li>
+        }
+        else
+        {
+            <li class="liMenu" style="text-align: center; height: 50px; vertical-align: middle">
+                <table style="width: 100%">
+                    <tr style="height: 50px; vertical-align: middle;text-align: center;">
+                        <td>
+                            All
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="0" />
+            </li>
+        }
+        @for (int i = 0; i < Model.AllCashandCarrys.Count; i++)
+        {
+            if (ViewBag.cc == Model.AllCashandCarrys[i].ID)
+            {
+            <li class="selectedretailmenu">
+                <table style="width: 100%">
+                    <tr style="height: 50px">
+                        <td align="left">
+                            @Model.AllCashandCarrys[i].Name
+                        </td>
+                        <td align="right">
+                            <img src="@Url.Content(Model.AllCashandCarrys[i].ImgUrl)"  alt="@Model.AllCashandCarrys[i].Name"  style="vertical-align:center;float: right;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.AllCashandCarrys[i].ID" />
+            </li>
+            }
+            else
+            {
+            <li class="liMenu">
+                <table style="width: 100%">
+                    <tr style="height: 50px">
+                        <td align="left">
+                            @Model.AllCashandCarrys[i].Name
+                        </td>
+                        <td align="right" style="">
+                            <img src="@Url.Content(Model.AllCashandCarrys[i].ImgUrl)"  alt="@Model.AllCashandCarrys[i].Name" style="vertical-align:center;float: right;;"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" value="@Model.AllCashandCarrys[i].ID" />
+            </li>
+            }
+
+        }
+    </ul>
+}

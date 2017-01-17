@@ -1,0 +1,109 @@
+﻿@model IEnumerable<IdealMall.Entities.Offer>
+@{
+    Layout = null;
+}
+
+<div>
+     <table width="100%" height="auto" style="color:black">
+        <tr  border="1px" >
+            <td  width="40%"  style="border-style:dotted;border-width:thin;" class="ui-corner-all" align="center">
+                <img src="@Url.Content(ViewBag.imageURL)"  style=" width:70%; height:70%"/>
+            </td>
+            
+
+            <td width="60%" valign="center" style="font-size:small;font-weight:bold; font-size:12px;color: rgb(193,0,0);" align="center">
+                        @ViewData["ProductName"] (@Model.First().Volume)
+                                 
+            </td>
+        </tr>
+     </table>       
+</div>
+<div>
+    <table style="font-size:xx-small;color:black" width="100%">
+       <tr>
+            <td colspan="4">&nbsp;</td>
+       </tr>
+        @for (int shopCnt=0; shopCnt <= Model.Count(); shopCnt++)
+        {
+             <tr style="@(shopCnt == 0 ? "border-top-style:solid;border-top-width:thin;border-bottom-style:solid;border-bottom-width:thin" : "")">
+                <td width="20%" style="text-align:left;font-weight:bold">@(shopCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().Shop.Name) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).Shop.Name))
+                </td>
+                <td width="20%" style="text-align:center;font-weight:bold">@(shopCnt==0?
+                            Html.LabelFor(m => m.FirstOrDefault().OfferRate) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).OfferRate))
+                </td>
+              
+                <td width="15%" style="text-align:center;font-weight:bold">@(shopCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().POR) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).POR))
+                </td>
+                 <td width="30%" style="text-align:left;font-weight:bold">@(shopCnt==0? 
+                            Html.LabelFor(m=>m.FirstOrDefault().Additional_offer) :
+                            Html.DisplayFor(m => m.ElementAt(shopCnt - 1).Additional_offer))
+                </td>
+                @if (shopCnt == 0)
+                {
+                <td width="20%" style=" font-weight:bold">ADD LIST
+                </td>    
+                }
+                else
+                {
+                <td width="20%">
+                    <div style="margin: 0 auto; float: right; display: inline;padding-right:0px">
+                                <a class="restsStatusOpen" title="Add to Shopping" onclick="AddComparePriceToShoppingList(this)" style="width: 30px; color: rgb(255, 255, 255);background-color: rgb(129, 192, 47);" >+
+                                </a>
+                                <input type="hidden" data-role="shopid" value="@Model.ElementAt(shopCnt - 1).Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.ElementAt(shopCnt - 1).VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.ElementAt(shopCnt - 1).OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.ElementAt(shopCnt - 1).Volume" />
+                                <input type="hidden"  data-role="product" value="@Model.ElementAt(shopCnt - 1).Product" />
+                                <input type="hidden"  data-role="Qty" value="1" />
+                    </div>                    
+                </td>
+                }
+            </tr>
+         }
+        <tr>
+            <td colspan="4">&nbsp;</td>
+       </tr>
+       
+    </table>
+</div>
+<script>
+function AddComparePriceToShoppingList(button)
+{
+var divmain= $(button).parent().first();
+var Qty= $(divmain).find("[data-role='Qty']").val();
+if(Qty!="")
+{
+var volume= $(divmain).find("[data-role='volume']").val();
+var shopid= $(divmain).find("[data-role='shopid']").val();
+var vat= $(divmain).find("[data-role='vat']").val();
+var offerrate= $(divmain).find("[data-role='offerrate']").val();
+var product= $(divmain).find("[data-role='product']").val();
+$.ajax({
+                 cache: false,
+                 async: false,
+                 type: "POST",
+                 url: "@(Url.Action("AddToShoppingList", "Trade"))",
+                data: { "UserId": "IdealMall","Shop_ID":shopid,"Offer_Rate":offerrate,"Product":product,"Qty":Qty,"VAT":vat,"Volume":volume},
+                success: function (data) {
+        //$(divmain).find("[data-role='loading']").hide();
+                $("#shoppinglistcount").animate({'font-size':"+12px"
+                });
+                $("#shoppinglistcount").text("("+data+")");
+                 alert("1 Qty Added to Shopping list");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //alert('Failed to retrieve states.');
+                }
+            });
+            }
+            else
+            {
+            $(divmain).find("[data-role='Qty']").addClass("required");
+            }
+}
+    </script>

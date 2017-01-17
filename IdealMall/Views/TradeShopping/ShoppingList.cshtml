@@ -1,0 +1,55 @@
+﻿       
+@{
+    if ((bool)ViewData["idHasValue"] )
+    {
+        Layout = null;
+    }
+    else {   ViewBag.Title = "Trade Shopping List";
+    Layout = "~/Views/Shared/_LayoutShoppingList.cshtml";
+    }
+
+}
+
+@if (((bool)ViewData["idHasValue"]))
+{
+        @Html.Partial("RetailersBigdiv")  
+      
+}
+else
+{
+    <div id="body-content"  style = " padding-left : 150px"   >
+        <div class="colRightTrade">
+        
+                    @Html.Partial("RetailersMenu")
+        
+         </div>
+            <div style=" width:800px" >
+                        <p style="color: rgb(193,0,0); font-weight: bolder; font-size: 20px; font-family: 'Berlin Sans FB Demi';">
+                            My Shopping List</p>
+
+                            </div>
+        <div id="searchresult" class="colLeftTradeShoppingList" >
+                
+                @Html.Partial("RetailersBigdiv")  
+    
+        
+        </div>
+    </div>
+    <script language="javascript">
+        function printDiv() {
+            var wind = window.open();
+            var htmlContent = "<html><head><title>Trade Shopping List</title>";
+            htmlContent += "<link href='@Url.Content("~/Content/site.css")' rel='stylesheet' type='text/css' />";
+            htmlContent += "<link href='@Url.Content("~/Content/styles.css")' rel='stylesheet' type='text/css' />";
+            htmlContent += "</head><body>";
+            htmlContent += "<div><img src='@(Url.Content("~/Images/logo.png"))'/> <span style='font-weight:bold;'>Trade Shopping list </span></div>";
+    
+            htmlContent += $("#searchresult").html();
+            htmlContent += "</body></html>";
+            wind.document.write(htmlContent);
+            wind.document.getElementById("printLnk").style.display = "none";
+            wind.print();
+ 
+        }
+    </script>
+}

@@ -1,0 +1,187 @@
+﻿@model IdealMall.Entities.PublicUser 
+@{
+    Layout = null;
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.0.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.11.0/jquery-ui.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.nicescroll.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.colorbox-min.js")"></script>
+<script type="text/javascript">
+    $("#formSignUp").find("input[id='EmailAddress']").val("");
+
+    function LogIn(data) {
+        if (data == "true") {
+            var emailaddress = $("#formSignIn").find("input[id='EmailAddress']").val();
+            var password = $("#formSignIn").find("input[id='Password']").val();
+
+            $.ajax({
+                cache: false,
+                async: false,
+                type: "POST",
+                url: "@(Url.Action("GetUserDetails", "Public"))",
+                data: { "EmailAddress": emailaddress, "Password": password },
+
+                success: function (data) {
+                    if (data != "not valid") {
+                        $("#guestname").text(data.FirstName + ' ' + data.LastName + '!');
+                    }
+                }
+            });
+            $("#loginstatus").val("loggedin");
+            $.colorbox.close();
+        } else {
+            alert(data);
+        }
+    }
+
+    function saveInit() {
+        if ($("#formSignUp").find("input[id=Password]").val() != $("#formSignUp").find("input[id=ConfirmPassword").val()) {
+            alert("Password does not match with Confirm Password!");
+            return false;
+        }
+    }
+
+    function SignUpResult(data) {
+        if (data != 'Error creating Public User account.') {
+            alert('Signed up successfully. Please log in to add shopping list');
+            $("#formSignIn").find("input[id='EmailAddress']").val($("#formSignUp").find("input[id='EmailAddress']").val());
+            $("#formSignUp").find("input[id='FirstName']").val('');
+            $("#formSignUp").find("input[id='LastName']").val('');
+            $("#formSignUp").find("input[id='EmailAddress']").val('');
+            $("#formSignUp").find("input[id='ContactNumber']").val('');
+            $("#formSignUp").find("input[id='PostCode']").val('');
+            $("#formSignUp").find("input[id='Password']").val('');
+            $("#formSignUp").find("input[id='ConfirmPassword']").val('');
+            $("#formSignUp").find("input[id='Password']").focus();
+        }
+    }
+
+</script>
+@{
+    <style type="text/css">
+        #partiallogin
+        {
+            width: 755px;
+        }
+
+            #partiallogin .formbox
+            {
+                margin: 10px;
+            }
+
+            #partiallogin .loginform, #partiallogin .registerform
+            {
+                width: 39%;
+            }
+
+            #partiallogin .loginform
+            {
+                margin-right: 10px;
+            }
+
+            #partiallogin .ortxt
+            {
+                margin-right: 10px;
+            }
+
+            #partiallogin .txtbox input
+            {
+                width: 265px;
+            }
+
+            #partiallogin .sbmtbtn .submitbtn
+            {
+                margin-bottom: 16px;
+                margin-left: 6px;
+                margin-top: 15px;
+                padding: 6px 74px;
+            }
+
+            #partiallogin .sbmtbtn
+            {
+                margin: 0 auto;
+                width: 206px;
+            }
+    </style>
+    
+    <div style="display: none;">
+        <div id="partiallogin">
+            <div class="formbox clearfix">
+                <div id="logfrm" class="loginform">
+                    <h1>User Login</h1>
+                    <p>Please enter your email address and password to sign in</p>
+                    @using (Ajax.BeginForm("ValidateCredentials", "Public", FormMethod.Post, new AjaxOptions { OnSuccess = "LogIn(data)" }, new { @id = "formSignIn" }))
+                    {
+                        Html.EnableClientValidation(true);
+                        Html.EnableUnobtrusiveJavaScript(true);
+                    
+                        <div class="txtbox">
+                            @Html.EditorFor(m=> m.EmailAddress)
+                        </div>
+                        <div class="txtbox">
+                            @Html.PasswordFor(m => m.Password, new { @class = "main-form", @placeholder = "Password", @autocomplete = "off", @value = Model.Password })
+                        </div>
+                        <div class="keepme">
+                            @Html.CheckBoxFor(m => m.RememberMe, new
+                                                                         {
+                                                                             @class = "uiInputLabelInput uiInputLabelCheckbox"
+                                                                         })
+                            <label for="radio1">Keep me logged-in <span>Leave unchecked if you're on a public computer</span></label>
+                        </div>
+@*<div align="left">
+                            @Html.CheckBoxFor(m => m.RememberMe, new{ @class = "uiInputLabelInput uiInputLabelCheckbox"})
+                            <label for="radio1">Keep me logged-in <span>Leave unchecked if you're on a public computer</span></label>
+                        </div>*@
+                    
+                        <div class="sbmtbtn clearfix">
+                            <input id="loginbtnpop" type="submit" value="Sign In" class="submitbtn" />
+                        </div>
+                 
+                        <input id="loginstatus" type="hidden" value="notloggedin" />
+                    }
+                </div>
+                <div class="ortxt">OR</div>
+                <div class="registerform">
+                    <h1>Sign UP</h1>
+                    @using (Ajax.BeginForm("SignUp", "Public", FormMethod.Post, new AjaxOptions { OnSuccess = "SignUpResult(data);", OnBegin = "return saveInit();" }, new { @id = "formSignUp" }))
+                    {
+                        Html.EnableClientValidation(true);
+                        Html.EnableUnobtrusiveJavaScript(true);
+                    
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.FirstName)
+                        </div>
+                        <div class="txtbox">
+
+                            @Html.EditorFor(m => m.LastName)
+                        </div>
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.EmailAddress)
+                        </div>
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.ContactNumber)
+                        </div>
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.PostCode)
+                        </div>
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.Password)
+                        </div>
+                        <div class="txtbox">
+                            @Html.EditorFor(m => m.ConfirmPassword)
+                        </div>
+                    
+                        <div class="sbmtbtn clearfix" style="align-self: center">
+                            <input type="submit" value="Register" class="submitbtn" />
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,213 @@
+﻿@{
+    Layout = null;
+       
+}
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.0.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.11.0/jquery-ui.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.nicescroll.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.colorbox-min.js")"></script>
+<script type="text/javascript">
+
+    function Checkout() {
+        if ($("#HistoryMainphonenumber").val() == "") {
+            alert("Please enter Home Telephone");
+            return "false";
+        }
+        if ($("#HistoryMobileNumber").val() == "") {
+            alert("Please enter Mobile Number");
+            return "false";
+        }
+        var result = window.confirm("Are you sure to delivery the products?");
+        if (result) {
+
+            $("#HomeDeliverystatus").val("success");
+            $("#hdnHistoryMainphonenumber").val($("#HistoryMainphonenumber").val());
+            $("#hdnHistoryMobileNumber").val($("#HistoryMobileNumber").val());
+            $("#hdnHistorydtvalue").val($("#Historydtvalue").val());
+            $("#hdnHistoryhourvalue").val($("#Historyhourvalue").val());
+            $("#hdnHistoryminutevalue").val($("#Historyminutevalue").val());
+            $.colorbox.close();
+        }
+    }
+
+</script>
+@{
+    <style type="text/css">
+        #HomeDeliver
+        {
+            width: 755px;
+        }
+
+            #HomeDeliver .formbox
+            {
+                margin: 10px;
+            }
+
+            #HomeDeliver .loginform, #HomeDeliver .registerform
+            {
+                width: 39%;
+            }
+
+            #HomeDeliver .loginform
+            {
+                margin-right: 10px;
+            }
+
+            #HomeDeliver .ortxt
+            {
+                margin-right: 10px;
+            }
+
+            #HomeDeliver .txtbox input
+            {
+                width: 265px;
+            }
+
+            #HomeDeliver .sbmtbtn .submitbtn
+            {
+                margin-bottom: 16px;
+                margin-left: 6px;
+                margin-top: 15px;
+                padding: 6px 74px;
+            }
+
+            #HomeDeliver .sbmtbtn
+            {
+                margin: 0 auto;
+                width: 206px;
+            }
+    </style>
+    
+    <div style="display: none;">
+        <div id="HomeDeliver">
+            <div class="formbox clearfix">
+                <div id="logfrm" class="loginform">
+                    <h1 style="font-weight: bold">Home Delivery</h1>
+                    <p style="font-weight: bold">Your contact details</p>
+                    <div style="font-weight: bold">
+                        Home Telephone                    
+                    </div>
+                    <br />
+                    <div class="txtbox">
+                        <input type="text" id="HistoryMainphonenumber" value="" />
+                    </div>
+                    <div style="font-weight: bold">
+                        Mobile Number
+                    </div>
+                    <br />
+                    <div class="txtbox">
+                        <input id="HistoryMobileNumber" value="" />
+                    </div>
+                </div>
+                <div class="ortxt"></div>
+
+                <div class="registerform">
+                    <h1 style="font-weight: bold">Your delivery Details</h1>
+                    <div style="font-weight: bold">Convenient Delivery Date</div>
+                    <br />
+                    <div>
+                        <select id="Historydtvalue" style="width: 125px; visibility: visible;">
+                            <option value = @DateTime.UtcNow.ToString("dd/MMM/yyyy")>@DateTime.UtcNow.ToString("dd/MMM/yyyy")</option>
+                            <option value = @DateTime.UtcNow.AddDays(1).ToString("dd/MMM/yyyy")>@DateTime.UtcNow.AddDays(1).ToString("dd/MMM/yyyy")</option>
+                            <option value = @DateTime.UtcNow.AddDays(2).ToString("dd/MMM/yyyy")>@DateTime.UtcNow.AddDays(2).ToString("dd/MMM/yyyy")</option>
+                        </select>
+                    </div>
+                    <br />
+                    <div style="font-weight: bold">Convenient Delivery Time</div>
+                    <br />
+                    <div style="font-weight: bold">
+                        Hour &nbsp;&nbsp;
+                        <select id="Historyhourvalue" style="width: 50px; visibility: visible;">
+                            @for (int i = 1; i <= 24; i++)
+                            {
+
+
+                                string istring;
+                                if (i < 10)
+                                {
+                                    istring = "0" + i.ToString();
+                                }
+                                else
+                                {
+                                    istring = i.ToString();
+                                }
+                                if (i == DateTime.UtcNow.AddHours(4).Hour)
+                                {
+                                <option selected="selected" value=@istring >@istring </option>
+                                }
+                                else
+                                {
+                                <option Value=@istring >@istring </option>
+                                }
+                            }
+
+                        </select>
+                        &nbsp;&nbsp;
+                        Minute &nbsp;&nbsp;
+                        <select id="Historyminutevalue" style="width: 50px; visibility: visible;">
+                            @for (int i = 0; i <= 59; i++)
+                            {
+                                //{
+                                //    if (i != DateTime.UtcNow.Minute)
+                                //    {
+                                string istring;
+                                if (i < 10)
+                                {
+                                    istring = "0" + i.ToString();
+                                }
+                                else
+                                {
+                                    istring = i.ToString();
+                                }
+                                if (i == DateTime.UtcNow.Minute)
+                                {
+                                <option selected="selected" value=@istring >@istring </option>
+                                }
+                                else
+                                {
+                                <option Value=@istring >@istring </option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                    <br />
+
+
+                    <div style="font-weight: bold">
+                        Delivery address
+                    </div>
+                    <br />
+                    <div class="txtbox">
+                        <input type="text" id="DoorNo" value="" placeholder="DoorNo" />
+                        <input type="text" id="AddressLine1" value="" placeholder="Address Line 1" />
+                        <input type="text" id="AddressLine2" value="" placeholder="Address Line 2" />
+                        <input type="text" id="AddressLine3" value="" placeholder="Address Line 3" />
+                        <input type="text" id="postcode" value="" placeholder="postcode" />
+                    </div>
+                </div>
+
+                <div class="sbmtbtn clearfix" style="align-content: center; align-self: flex-end">
+                    <input type="submit" onclick="javascript: Checkout();" value="Checkout" class="submitbtn" />
+                </div>
+
+
+
+            </div>
+            <div>If you have ordered.....</div>
+            <div>You have ordered some alcohol or other restricted items in your basket, as this is the first time you have purchased</div>
+            <div>these itesm with us, you need to collect the items personally.</div>
+        </div>
+
+
+    </div>
+    <input id="hdnHistoryMainphonenumber" type="hidden" value="" />
+    <input id="hdnHistoryMobileNumber" type="hidden" value="" />
+    <input id="hdnHistorydtvalue" type="hidden" value="" />
+    <input id="hdnHistoryhourvalue" type="hidden" value="" />
+    <input id="hdnHistoryminutevalue" type="hidden" value="" />
+    <input id="HomeDeliverystatus" type="hidden" value="failure" />
+}

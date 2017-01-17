@@ -1,0 +1,69 @@
+.ComingSoon {
+	width: 600px; text-align: center; overflow: hidden; font-size: 13px; position: relative;
+}
+.ComingSoonText .error-text {
+	padding: 5px; border-radius: 5px; margin-top: 4px; margin-bottom: 4px; background-color: rgb(255, 255, 255); text-shadow: 0 0 0 #fff; -webkit-border-radius: 5px;
+}
+.ComingSoonTo {
+	color: rgb(0, 0, 0); line-height: 30px; padding-bottom: 20px; font-family: Regular; font-size: 31px; margin-bottom: 20px; border-bottom-color: rgb(204, 204, 204); border-bottom-width: 1px; border-bottom-style: solid;
+}
+.ComingSoonToPostcode {
+	left: 380px; top: 10px; font-size: 50px; font-weight: 600; position: absolute;
+}
+.ComingSoon.popupWrapper .close {
+	left: auto; top: 4px; right: 1px;
+}
+.formRow {
+	text-align: center; padding-top: 10px; padding-bottom: 10px; position: relative;
+}
+.frow2 label {
+	width: 150px; text-align: right; padding-right: 10px; font-size: 16px; font-weight: 600; display: inline-block;
+}
+.frow1 label {
+	width: 150px; text-align: right; padding-right: 10px; font-size: 16px; font-weight: 600; display: inline-block;
+}
+.frow2 input {
+	padding: 5px 5px 5px 10px; border-radius: 5px; border: 2px solid rgb(204, 204, 204); width: 300px; color: rgb(48, 48, 48); font-size: 20px !important; font-weight: 600; -webkit-border-radius: 5px;
+}
+.frow1 input {
+	padding: 5px 5px 5px 10px; border-radius: 5px; border: 2px solid rgb(204, 204, 204); width: 300px; color: rgb(48, 48, 48); font-size: 20px !important; font-weight: 600; -webkit-border-radius: 5px;
+}
+.frow2 input:focus {
+	padding: 5px 5px 5px 10px; border-radius: 5px; border: 2px solid rgb(204, 204, 204); width: 300px; color: rgb(48, 48, 48); font-size: 20px !important; font-weight: 600; -webkit-border-radius: 5px;
+}
+.frow1 input:focus {
+	padding: 5px 5px 5px 10px; border-radius: 5px; border: 2px solid rgb(204, 204, 204); width: 300px; color: rgb(48, 48, 48); font-size: 20px !important; font-weight: 600; -webkit-border-radius: 5px;
+}
+.frow3 {
+	padding-left: 200px;
+}
+.frow3 input {
+	border: 0px currentColor;
+}
+.cbog {
+	background-position: 0px -1067px; width: 18px; height: 18px; margin-top: 0px; float: left; background-image: url("../../images/hh_sprite.png"); background-repeat: no-repeat; background-color: rgb(255, 255, 255);
+}
+.frow3 label {
+	width: 290px; text-align: left; padding-top: 0px; padding-left: 10px; float: left; display: block;
+}
+.frow4 input {
+	background: rgb(129, 192, 47); border: 0px currentColor; width: 282px; height: 54px; color: rgb(255, 255, 255); text-transform: uppercase; overflow: hidden; font-size: 20px; font-weight: bold; -webkit-border-radius: 4px; -moz-border-radius: 4px; -ms-border-radius: 4px; -o-border-radius: 4px;
+}
+.frow4 button {
+	background: rgb(129, 192, 47); border: 0px currentColor; width: 282px; height: 54px; color: rgb(255, 255, 255); text-transform: uppercase; overflow: hidden; font-size: 20px; font-weight: bold; -webkit-border-radius: 4px; -moz-border-radius: 4px; -ms-border-radius: 4px; -o-border-radius: 4px;
+}
+.frow4 input:hover {
+	background-position: 0px -69px;
+}
+.frow4 input:active {
+	background-position: 0px -140px;
+}
+.ComingSoonNote {
+	padding-top: 10px; padding-bottom: 10px; font-size: 13px; font-weight: 400;
+}
+.ComingSoonNews {
+	padding-top: 10px; font-weight: 400;
+}
+.ComingSoonForm {
+	margin-top: 15px;
+}

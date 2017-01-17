@@ -1,0 +1,26 @@
+﻿@model string
+@{
+    Layout = null;
+}
+
+@Html.ValidationMessageFor(m => m, null, new { @style = "color:white; font-size: 30px;align:left;background:red;" })
+@if (ViewData.ModelMetadata.DataTypeName == "Password")
+{
+@Html.PasswordFor(m => m, new
+{
+    @style = "width: 880px; height: 65px; font-size: 40px",
+    @class = "",
+    @placeholder = ViewData.ModelMetadata.DisplayName,
+    @autocomplete = "off"
+})
+}
+else
+{
+@Html.TextBoxFor(m => m, new
+{
+    @style = "width: 880px; height: 65px; font-size: 40px",
+    @class = "",
+    @placeholder = ViewData.ModelMetadata.DisplayName,
+    @autocomplete = "off"
+})
+}                                   

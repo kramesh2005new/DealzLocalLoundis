@@ -1,0 +1,394 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    Layout = null;
+    ViewBag.ID = "Product";
+    
+}
+<style type="text/css">
+    .productbox
+    {
+        width: 248px;
+        min-height: 285px;
+    }
+
+    .productdetails h1
+    {
+        height: 55px;
+    }
+</style>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.elevateZoom-3.0.8.min.js")"></script>
+<script type="text/javascript">
+
+    $(document).ready(
+        function () {
+
+            totalpages = '@ViewBag.pages';
+            $("#selectedcompany").val('@ViewBag.Mode');
+            MenuChange('@ViewBag.Mode');
+
+        });
+
+    $(".zoom_01").elevateZoom({
+        borderColour: '#ccc',
+        zoomWindowFadeIn: 500,
+        zoomWindowFadeOut: 500,
+        lensFadeIn: 500,
+        lensFadeOut: 500,
+        zoomWindowHeight: 300,
+        zoomWindowWidth: 300,
+        zoomWindowPosition: 10
+    });
+
+    $(".pager a").click(function (e) {
+        e.preventDefault();
+        var txt = $(e.target).text();
+        if (txt == '«') {
+            txt = $(".current").text();
+            var numPrev = parseInt(txt);
+            numPrev -= 1;
+            txt = numPrev;
+        }
+        if (txt == '»') {
+            txt = $(".current").text();
+            var numNext = parseInt(txt);
+            numNext += 1;
+            txt = numNext;
+        }
+        refreshproducts("@ViewBag.cc", txt);
+    });
+
+    $("[data-role='Qty']").keydown(function (e) {
+        if (e.keyCode == 13) {
+            AddToShoppingList(this);
+            return;
+        }
+        // Allow: backspace, delete, tab, escape and enter
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+            // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        } x
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    function MenuChange(Offer_Mode) {
+        if (Offer_Mode == "W") {
+            $('#ancWeekly').addClass("active");
+        }
+        else if (Offer_Mode == "M") {
+            $('#ancMonthly').addClass('active');
+        }
+        else if (Offer_Mode == "N") {
+            $('#ancNew').addClass('active');
+        }
+        else if (Offer_Mode == "B") {
+            $('#ancBest').addClass('active');
+        }
+        else {
+            $('#anchome').addClass('active');
+        }
+    }
+
+</script>
+<!-- pager -->
+<div>
+    @if (Model.Pager.EndPage > 1)
+    {
+        <ul class="pagination">
+            @if (Model.Pager.CurrentPage > 1)
+            {
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','1');">< First</a>
+                </li>
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.CurrentPage - 1)');"><< Previous</a>
+                </li>
+            }
+
+            @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+            {
+                <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@page');">@page</a>
+                </li>
+            }
+
+            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+            {
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.CurrentPage + 1)');">Next >></a>
+                </li>
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.TotalPages)');">Last ></a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+<table cellpadding="0" class="product-table" cellspacing="0" border="0" width="100%">
+
+    @{
+       
+        for (int i = 0; i < Model.Offers.Count; i++)
+        {
+        <tr class="product-block">
+            <td class="productbox">
+                @*  <div class="companyname">
+                    <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                </div>*@
+                <div class="productdetails">
+                    <h1>
+                        @if (Model.Offers[i].Product.Length > 41)
+                        {
+                            <span data-role="product">@Model.Offers[i].Product</span><span style="display: inline"> (@Model.Offers[i].Volume) </span>
+                        }
+                        else
+                        {
+                            <span data-role="product">@Model.Offers[i].Product</span><span style="display: block"> (@Model.Offers[i].Volume) </span>
+                        }
+
+                    </h1>
+
+
+                    <div class="pro-details">
+                        @if (Model.Offers[i].OfferRate != 0)
+                        {
+                            string strSellPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                            {
+                                strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                strSellPrice = "£" + Model.Offers[i].OfferRate;
+                            }
+                            string strSell = string.Empty;
+                           
+                            <h2><span>@strSellPrice</span></h2>
+                            if (Convert.ToString(Model.Offers[i].Previous_Prize) != string.Empty)
+                            {
+                                if (Convert.ToDecimal(Model.Offers[i].Previous_Prize) > 0)
+                                {
+                            <h2 class="rmbold">(Was <span class="line-through">£ @Model.Offers[i].Previous_Prize</span>)</h2>
+
+                                }
+                            }
+                        }
+
+
+                    </div>
+                    <div class="pro-image">
+
+                        <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product "  class="zoom_01" data-zoom-image="@Url.Content(Model.Offers[i].ImageURL)" />
+                    </div>
+                    <div class="qty-cart">
+                        <div class="input afix">
+                            <label>Quantity</label>
+                            <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                        </div>
+                        <div class="cart">
+                            <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                            <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                            <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                            <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                            <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                        </div>
+                    </div>
+                    @if ((Model.Offers[i].Offer_Mode == "M" || Model.Offers[i].Offer_Mode == "W") && Model.Offers[i].OfferEnddate != string.Empty)
+                    {
+                        <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                    }
+                </div>
+            </td>
+            <td style="width: 15px;"></td>
+
+            @if (i++ < Model.Offers.Count - 1)
+            {
+                <td class="productbox">
+                    @*<div class="companyname">
+                        <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                    </div>*@
+                    <div class="productdetails">
+                        <h1>
+                            @if (Model.Offers[i].Product.Length > 41)
+                            {
+                                <span data-role="product">@Model.Offers[i].Product</span><span style="display: inline"> (@Model.Offers[i].Volume) </span>
+                            }
+                            else
+                            {
+                                <span data-role="product">@Model.Offers[i].Product</span><span style="display: block"> (@Model.Offers[i].Volume) </span>
+                            }
+                        </h1>
+
+                        <div class="pro-details">
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].OfferRate;
+                                }
+                                <h2><span>@strSellPrice</span></h2>
+                                if (Convert.ToString(Model.Offers[i].Previous_Prize) != string.Empty)
+                                {
+                                    if (Convert.ToDecimal(Model.Offers[i].Previous_Prize) > 0)
+                                    {
+                                <h2 class="rmbold">(Was <span class="line-through">£ @Model.Offers[i].Previous_Prize</span>)</h2>
+
+                                    }
+                                }
+                            }
+
+                        </div>
+                        <div class="pro-image">
+
+                            <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product " class="zoom_01" data-zoom-image="@Url.Content(Model.Offers[i].ImageURL)" />
+
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input afix">
+                                <label>Quantity</label>
+                                <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                                <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if ((Model.Offers[i].Offer_Mode == "M" || Model.Offers[i].Offer_Mode == "W") && Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                        }
+
+                    </div>
+                </td>
+                <td style="width: 15px;"></td>
+            }
+
+            @if (i++ <= Model.Offers.Count - 2)
+            {
+                <td class="productbox">
+                    @* <div class="companyname">
+                        <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                    </div>*@
+                    <div class="productdetails">
+                        <h1>
+                            @if (Model.Offers[i].Product.Length > 41)
+                            {
+                                <span data-role="product">@Model.Offers[i].Product</span><span style="display: inline"> (@Model.Offers[i].Volume) </span>
+                            }
+                            else
+                            {
+                                <span data-role="product">@Model.Offers[i].Product</span><span style="display: block"> (@Model.Offers[i].Volume) </span>
+                            }
+                        </h1>
+                        <div class="pro-details">
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].OfferRate;
+                                }
+                            
+                                <h2><span>@strSellPrice</span></h2>
+                                if (Convert.ToString(Model.Offers[i].Previous_Prize) != string.Empty)
+                                {
+                                    if (Convert.ToDecimal(Model.Offers[i].Previous_Prize) > 0)
+                                    {
+                                <h2 class="rmbold">(Was <span class="line-through">£ @Model.Offers[i].Previous_Prize</span>)</h2>
+
+                                    }
+                                }
+
+                            }
+
+
+
+                        </div>
+                        <div class="pro-image">
+                            
+                                <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product " class="zoom_01" data-zoom-image="@Url.Content(Model.Offers[i].ImageURL)" />
+
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input afix">
+                                <label>Quantity</label>
+
+
+                                <input type="text" data-role="Qty" value="1" style="width: 50px;" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);" onclick=" AddToShoppingList(this, '@ViewBag.PublicUserName'); ">Add To Cart</a>
+                                <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if ((Model.Offers[i].Offer_Mode == "M" || Model.Offers[i].Offer_Mode == "W") && Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                        }
+
+                    </div>
+                </td>
+            }
+        </tr>
+        <tr>
+            <td style="height: 15px;" colspan="5"></td>
+        </tr>
+        }
+      
+    }
+
+</table>
+<div>
+    @if (Model.Pager.EndPage > 1)
+    {
+        <ul class="pagination">
+            @if (Model.Pager.CurrentPage > 1)
+            {
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','1');">< First</a>
+                </li>
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.CurrentPage - 1)');"><< Previous</a>
+                </li>
+            }
+
+            @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+            {
+                <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@page');">@page</a>
+                </li>
+            }
+
+            @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+            {
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.CurrentPage + 1)');">Next >></a>
+                </li>
+                <li>
+                    <a href="#" onclick="javascript:PagingClick('@ViewBag.Mode','@(Model.Pager.TotalPages)');">Last ></a>
+                </li>
+            }
+        </ul>
+    }
+</div>

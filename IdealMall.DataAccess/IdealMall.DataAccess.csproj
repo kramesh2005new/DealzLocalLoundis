@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{42B501A2-2724-4FA8-A340-B3DCEC15B736}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IdealMall.DataAccess</RootNamespace>
+    <AssemblyName>IdealMall.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\IdealMall\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DORM">
+      <HintPath>..\packages\DORM.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="IdealMall.Common">
+      <HintPath>..\IdealMall.Common\bin\Debug\IdealMall.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LinqKit.1.0\lib\35\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CashAndCarry.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CreateAccount_Public.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CreateAccount_Trade.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Employee.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdealMallModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdealMallModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdealMallModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="IdealMallModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdealMallModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Login_Public.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Login_Trade.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OfferProducts_Public.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OfferProducts_Trade.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="postcodelatlng.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductOfferPublic.cs" />
+    <Compile Include="PublicDA.cs" />
+    <Compile Include="PublicShoppingDA.cs" />
+    <Compile Include="Retailshop.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingList_Public.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingList_Trade.cs">
+      <DependentUpon>IdealMallModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TradeDA.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TradeShoppingDA.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IdealMall.Entities\IdealMall.Entities.csproj">
+      <Project>{39D0EB17-A0A7-422E-A93A-F9C12234F0D0}</Project>
+      <Name>IdealMall.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="IdealMallModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>IdealMallModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="IdealMallModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IdealMallModel.edmx</DependentUpon>
+      <LastGenOutput>IdealMallModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="IdealMallModel.edmx.diagram">
+      <DependentUpon>IdealMallModel.edmx</DependentUpon>
+    </None>
+    <None Include="IdealMallModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>IdealMallModel.edmx</DependentUpon>
+      <LastGenOutput>IdealMallModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

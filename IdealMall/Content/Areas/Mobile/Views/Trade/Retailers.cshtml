@@ -1,0 +1,86 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+   
+    Layout = null;
+    
+}
+@{
+   
+    for (int i = 0; i < Model.Offers.Count; i++)
+    {
+    <div class="trow">
+        <div class="tleft">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Model.Offers[i].Product</h3>
+                <p style="color: orange">
+                    <img src="@Url.Content("~/images/" + Model.Offers[i].Shop.ImgUrl)" alt="@Model.Offers[i].Shop.Name"/>
+                    Price £3.00
+                </p>
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>
+                        @Model.Offers[i].Volume</li>
+                    <li>Sell @@£@Model.Offers[i].OfferRate</li>
+                </ul>
+            </div>
+        </div>
+        @if (++i < Model.Offers.Count)
+        {
+            <div class="tmiddle">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.Offers[i].Product</h3>
+                    <p style="color: orange">
+                        <img src="@Url.Content("~/images/" + Model.Offers[i].Shop.ImgUrl)" alt="@Model.Offers[i].Shop.Name"/>
+                        Price £3.00</p>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            @Model.Offers[i].Volume</li>
+                        <li>Sell @@£@Model.Offers[i].OfferRate</li>
+                    </ul>
+                </div>
+            </div>
+        }
+        @if (++i < Model.Offers.Count)
+        {
+            <div class="tmiddle">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.Offers[i].Product</h3>
+                    <p style="color: orange">
+                        <img src="@Url.Content("~/images/" + Model.Offers[i].Shop.ImgUrl)" alt="@Model.Offers[i].Shop.Name"/>
+                        Price £3.00</p>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            @Model.Offers[i].Volume</li>
+                        <li>Sell @@£@Model.Offers[i].OfferRate</li>
+                    </ul>
+                </div>
+            </div>
+        }
+        @if (++i < Model.Offers.Count)
+        {
+            <div class="tright">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.Offers[i].Product</h3>
+                    <p style="color: orange">
+                        <img src="@Url.Content("~/images/" + Model.Offers[i].Shop.ImgUrl)" alt="@Model.Offers[i].Shop.Name"/>Price
+                        £3.00
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        <li>
+                            @Model.Offers[i].Volume</li>
+                        <li>Sell @@£@Model.Offers[i].OfferRate</li>
+                    </ul>
+                </div>
+            </div>
+  
+        }
+    </div>
+    }
+}

@@ -1,0 +1,360 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+
+    $(document).ready(
+function () {
+    totalpages = '@ViewBag.pages';
+}
+);
+
+    $("[data-role='Qty']").keydown(function (e) {
+        if (e.keyCode == 13) {
+            AddToShoppingList(this);
+            return;
+        }
+        // Allow: backspace, delete, tab, escape and enter
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+            // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+</script>
+<table class="product-table" cellpadding="0" cellspacing="0" border="0" width="100%">
+    @{
+        if (Model == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < Model.Offers.Count; i++)
+        {
+  
+        <tr class="product-block">
+
+            <td class="productbox">
+                <div class="companyname">
+                    <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                    <span>@Model.Offers[i].Shop.Name</span>
+                </div>
+                <div class="productdetails">
+                    <h1>
+                        <span data-role="product">@Model.Offers[i].Product</span>
+                    </h1>
+                    <h1>
+                        <span>Volume: @Model.Offers[i].Volume</span>
+                    </h1>
+
+                    <div class="pro-details">
+                        @if (Model.Offers[i].OfferRate != 0)
+                        {
+                            string strSellPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                            {
+                                strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                strSellPrice = "£" + Model.Offers[i].OfferRate;
+                            }
+                            string strSell = string.Empty;
+                            if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                            {
+                                strSell = "Each price : ";
+                            }
+                            else
+                            {
+                                strSell = "Offer price : ";
+                            }
+                            <h2>@strSell  <span>@strSellPrice</span></h2>
+                        }
+                        @if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                        {
+                            <p>@Model.Offers[i].Additional_offer</p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].Sell_Price)))
+                        {
+                            string strSellPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].Sell_Price) == 0)
+                            {
+                                strSellPrice = "0" + "p";
+                            }
+                            else if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                            {
+                                strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                strSellPrice = "£" + Model.Offers[i].Sell_Price;
+                            }
+                                                       
+                            <div style="margin-bottom: 4px;">Sell at  : @strSellPrice</div>
+                           
+                        }
+                        else
+                        {
+                            <div style="margin-bottom: 4px;">Sell at  : Model.Offers[i].Sell_Price</div>
+
+                        }
+                        @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].POR)))
+                        {
+                            <div>POR :@Model.Offers[i].POR</div>
+                        }
+                        else
+                        {
+                            <div>POR :@Model.Offers[i].POR</div>
+                        }
+
+
+                    </div>
+                    <div class="pro-image">
+                        <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product" />
+                    </div>
+                    <div class="qty-cart">
+                        <div class="input afix">
+                            <label>Quantity</label>
+                            <input type="text" data-role="Qty" value="1" />
+                        </div>
+                        <div class="cart">
+                            <a href="javascript:void(0);" class="compare" product-name="@Model.Offers[i].Product.Trim()=@Model.Offers[i].Volume.Trim()" product-url ="@(Model.Offers[i].ImageURL)"   onclick=" openPriceCompare(this);">Compare Price</a>
+                            <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);"  onclick=" AddToShoppingList(this, '@ViewBag.TradeUserName'); ">Add To Shopping</a>
+                            <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                            <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                            <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                            <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                        </div>
+                    </div>
+                    @if (Model.Offers[i].OfferEnddate != string.Empty)
+                    {
+                        <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                    }
+                </div>
+            </td>
+            <td style="width: 15px;"></td>
+            @if (i++ < Model.Offers.Count - 1)
+            {
+                <td class="productbox">
+                    <div class="companyname">
+                        <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                        <span>@Model.Offers[i].Shop.Name</span>
+                    </div>
+                    <div class="productdetails">
+                        <h1>
+                            <span data-role="product">@Model.Offers[i].Product</span>
+                        </h1>
+                        <h1>
+                            <span>Volume: @Model.Offers[i].Volume</span>
+                        </h1>
+
+                        <div class="pro-details">
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].OfferRate;
+                                }
+                                string strSell = string.Empty;
+                                if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                                {
+                                    strSell = "Each price : ";
+                                }
+                                else
+                                {
+                                    strSell = "Offer price : ";
+                                }
+                                <h2>@strSell  <span>@strSellPrice</span></h2>
+                            }
+                            @if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                            {
+                                <p>@Model.Offers[i].Additional_offer</p>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].Sell_Price)))
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].Sell_Price) == 0)
+                                {
+                                    strSellPrice = "0" + "p";
+                                }
+                                else if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].Sell_Price;
+                                }
+                                                       
+                                <div style="margin-bottom: 4px;">Sell at  : @strSellPrice</div>
+                            }
+                            else
+                            {
+                                <div style="margin-bottom: 4px;">Sell at  : Model.Offers[i].Sell_Price</div>
+                                
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].POR)))
+                            {
+                                <div>POR :@Model.Offers[i].POR</div>
+                            }
+                            else
+                            {
+                                <div>POR :@Model.Offers[i].POR</div>
+                            }
+
+
+                        </div>
+                        <div class="pro-image">
+                            <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product" />
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input">
+                                <label>Quantity</label>
+                                <input type="text" data-role="Qty" value="1" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="compare" product-name="@Model.Offers[i].Product.Trim()=@Model.Offers[i].Volume.Trim()" product-url ="@(Model.Offers[i].ImageURL)"  onclick="openPriceCompare(this);">Compare Price</a>
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);"  onclick=" AddToShoppingList(this, '@ViewBag.TradeUserName'); ">Add To Shopping</a>
+                                <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if (Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                        }
+                    </div>
+                </td>
+                <td style="width: 15px;"></td>
+            }
+
+            @if (i++ <= Model.Offers.Count - 2)
+            {
+                <td class="productbox marginnone">
+                    <div class="companyname">
+                        <img src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" border="0" alt="@Model.Offers[i].Shop.Name" />
+                        <span>@Model.Offers[i].Shop.Name</span>
+                    </div>
+                    <div class="productdetails">
+                        <h1>
+                            <span data-role="product">@Model.Offers[i].Product</span>
+                        </h1>
+                        <h1>
+                            <span>Volume: @Model.Offers[i].Volume</span>
+                        </h1>
+
+                        <div class="pro-details">
+                            @if (Model.Offers[i].OfferRate != 0)
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].OfferRate;
+                                }
+                                string strSell = string.Empty;
+                                if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                                {
+                                    strSell = "Each price : ";
+                                }
+                                else
+                                {
+                                    strSell = "Offer price : ";
+                                }
+                                <h2>@strSell  <span>@strSellPrice</span></h2>
+                            }
+                            @if (false == string.IsNullOrWhiteSpace(Model.Offers[i].Additional_offer))
+                            {
+                                <p>@Model.Offers[i].Additional_offer</p>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].Sell_Price)))
+                            {
+                                string strSellPrice = string.Empty;
+                                if (Convert.ToDecimal(Model.Offers[i].Sell_Price) == 0)
+                                {
+                                    strSellPrice = "0" + "p";
+                                }
+                                else if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                                {
+                                    strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                }
+                                else
+                                {
+                                    strSellPrice = "£" + Model.Offers[i].Sell_Price;
+                                }
+                                                       
+                                <div style="margin-bottom: 4px;">Sell at  : @strSellPrice</div>
+                            }
+                            else
+                            {
+                                <div style="margin-bottom: 4px;">Sell at  : Model.Offers[i].Sell_Price</div>
+                                
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Convert.ToString(Model.Offers[i].POR)))
+                            {
+                                <div>POR :@Model.Offers[i].POR</div>
+                            }
+                            else
+                            {
+                                <div>POR :@Model.Offers[i].POR</div>
+                            }
+
+
+                        </div>
+                        <div class="pro-image">
+                            <img src="@Url.Content(Model.Offers[i].ImageURL)" border="0" alt="@Model.Offers[i].Product" />
+                        </div>
+                        <div class="qty-cart">
+                            <div class="input">
+                                <label>Quantity</label>
+                                <input type="text" data-role="Qty" value="1" />
+                            </div>
+                            <div class="cart">
+                                <a href="javascript:void(0);" class="compare" product-name="@Model.Offers[i].Product.Trim()=@Model.Offers[i].Volume.Trim()" product-url ="@(Model.Offers[i].ImageURL)" onclick=" openPriceCompare(this);">Compare Price</a>
+                                <a href="javascript:void(0);" class="addtocart" onmousedown="shoppingAddKeyDown(this);"  onclick=" AddToShoppingList(this, '@ViewBag.TradeUserName'); ">Add To Shopping</a>
+                                <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                            </div>
+                        </div>
+                        @if (Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            <h3>Offer valid until: <span>@Model.Offers[i].OfferEnddate</span></h3>
+                        }
+                    </div>
+                </td>
+            }
+        </tr>
+        <tr>
+            <td style="height: 15px;" colspan="5"></td>
+        </tr>
+        }
+    
+    }
+
+</table>

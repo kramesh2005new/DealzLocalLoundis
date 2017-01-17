@@ -1,0 +1,133 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+
+    function setpagecount() {
+        //debugger;
+    totalpages = '@ViewBag.pages';
+}
+
+</script>
+@{
+    <ul style="padding:5px;" class="noDots">
+        @for (int i = 0; i < Model.Offers.Count; i++)
+        {
+            <li>
+                <div class="shadow" >
+                   <table width="100%">
+                   <tr>
+                   <td>
+                      <div>
+                            
+                                <img   alt="@Model.Offers[i].Shop.Name" src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" >
+                              
+                               <br />
+                                <div style="margin: 0px auto;display:inline;font-size: 13px;  font-weight:bold"
+                                    data-role="product">
+                                                    @Model.Offers[i].Product
+                                </div>
+                                <br />
+                                               @if (Model.Offers[i].OfferRate != 0)
+                                    {
+                                        string offerPrice = string.Empty;
+                                        if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                                        {
+                                            offerPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                        }
+                                        else
+                                        {
+                                            offerPrice = "£ " + Model.Offers[i].OfferRate;
+                                        }
+                                    
+                                        <span style="font-family: 'Comic Sans MS'; font-size: 13px; color: #C86301; font-weight: bold;">
+                                            Offer Price: @offerPrice
+                                        </span>
+                                    }                                            <br />
+                                              <span style="font-family: 'Comic Sans MS'; font-size: 13px;" >Volume: @Model.Offers[i].Volume</span>
+                                            <br />
+                                             @if (Model.Offers[i].Sell_Price != "0.00")
+                        {
+                                           string strSellPrice = string.Empty;
+                                        if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                                        {
+                                            strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                                        }
+                                        else
+                                        {
+                                            strSellPrice = "£ " + Model.Offers[i].Sell_Price;
+                                        }
+                                        <span style="font-family: 'Comic Sans MS'; font-size: 13px;">Sell At @strSellPrice 
+                                            each</span>  
+                                          
+                        }
+                                                  <br />
+                                                     @if (Model.Offers[i].POR != 0)
+                                                     {
+                                                <span style="font-family: 'Comic Sans MS'; font-size: 13px;">POR: @Model.Offers[i].POR
+                                                    %</span> 
+                                                     }
+                                                   
+                                                    <span style="display: none"><b>@Model.Offers[i].VAT
+                                                </b></span>
+                                            <br />
+                                        @if (Model.Offers[i].Additional_offer != string.Empty && Model.Offers[i].Additional_offer != null)
+                                        {
+                                            
+                                                    <span class="buyFreeStyle" style=" color:rgb(193,0,0); font-size:13px;">@Model.Offers[i].Additional_offer</span>
+                                                  <br />
+                                        }
+                                          @if (Model.Offers[i].OfferEnddate != string.Empty)
+                                          {
+                                                <span style="font-family: 'Comic Sans MS';font-size: 13px;color: #C86301; font-weight:bold">Offer valid until: <br />@Model.Offers[i].OfferEnddate</span>
+                                              
+                                          }
+                                             
+                                            
+                                            
+                                                 
+                                            
+                                </div>
+                                </td><td align="right">
+                            <img src="@Url.Content(Model.Offers[i].ImageURL)" style="padding-right:5px; width:130px" alt="@Model.Offers[i].Product"/>
+                            
+                     </td></tr></table>
+                     <div >
+                            <table width="100%"><tr><td>
+                             <span style="margin: 0 auto;">
+                                                <a class="mobrestsStatusOpen" 
+                                            title="Compare Price"  product-name="@Model.Offers[i].Product"
+                                            product-url ="@(Model.Offers[i].ImageURL)"
+                                            onclick="openPriceCompare(this);" >
+                                                    <b>Compare Price</b></a>
+                                                  
+                                            </span>
+                                            
+                                      </td><td align="right">
+                                      <div style="margin: 0 auto;display:table-cell;">
+                                                <input title="Qty" onload="this.focus();" maxlength="" data-role="Qty" value="1" style="width: 30px;
+                                                    height: 30px; padding-right: 10px; text-align: left;" />
+                                                
+                                      </div>
+                                            <div style="margin: 0 auto;display:table-cell;">
+                                                <a class="mobrestsStatusOpen" title="Add to Shopping"  onclick="AddToShoppingList(this)" style="width: 120px"  >Add to Shopping
+                                                </a>
+                                                <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                                <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                                  <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                                <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                                            </div>
+                                        <img src="../../images/ShopLoader.gif"  data-role="loading" style="position:absolute;top:50%;left:100px; display: none;" />
+                                            
+                                      </td></tr></table>  
+                           
+                                
+                            </div>
+                </div>
+                <br />
+            </li>
+        }
+    </ul>
+}

@@ -1,0 +1,106 @@
+﻿@model IdealMall.Entities.CashandCarryOffers
+@{
+    Layout = null;
+}
+
+
+<script type="text/javascript">
+    function redirectLocalShopPublicSearch(ctrl) {
+        $.colorbox.close();        
+        var localShopID = $(ctrl).attr("shop-id");
+        getresult($("#query").val(), localShopID, null);
+        var localShopName = $(ctrl).attr("shop-name");
+        $("#companyproduct").text(localShopName);
+        $("#selectedcompany").val(localShopID);
+        $("#companies").children().css("background-color", "#eeeeee");
+        $(ctrl).closest("div.companyname").css("background-color", "lavenderblush");
+        
+    };
+  
+    function oncolorboxclick() {
+        $.colorbox({ href: '#companies', inline: true, width: '640px', opacity: 0.50, escKey: true, overlayClose: false });
+    }
+</script>
+@{
+     <div class="filterblock">
+        <div class="filter-result">
+            <span class="posticons"></span>
+            <div class="changeLocation">
+
+                <select  name="companyproduct" style="width: 170px;" onclick="oncolorboxclick()">
+                    <option id ="companyproduct"  value="0" selected="selected">View All Cash and Carrys</option>
+                    
+                </select>
+
+                <input type="hidden" id="selectedcompany" />
+            </div>
+        </div>
+    </div>
+    @*
+    
+    <div class="filterblock">
+        <div class="filter-result">
+            <span class="posticons"></span>
+            <div class="changeLocation">
+                <a class="companypopup"  id="companyproduct" title="List of Companies" onclick="oncolorboxclick()">                    
+                    View All Cash and Carrys
+                </a>
+                <input type="hidden" id="selectedcompany"/>
+            </div>
+        </div>
+    </div>*@
+
+    <div style="display: none;">
+       
+        <div id="companies">
+            @if (ViewBag.cc == 0)
+            {
+                <script>
+                    $("#companyproduct").text("View All Cash and Carrys");
+                </script>                
+            }
+                       <div class="viewallcom">
+                    <div class="offer">
+                        <a href="javascript:void(0);" shop-id="0" shop-name="View All Cash and Carrys" onclick=" redirectLocalShopPublicSearch(this); ">View All Cash & Carrys Offers </a>
+                    </div></div>
+            @for (int i = 0; i < Model.AllCashandCarrys.Count; i++)
+            {
+                if (ViewBag.cc == Model.AllCashandCarrys[i].ID)
+                {
+                    <script>
+                        $("#companyproduct").text("@Model.AllCashandCarrys[i].Name");
+                        $("#selectedcompany").val("@Model.AllCashandCarrys[i].ID");
+                    </script>
+                    <div class="companyname" style="width: 556px;">
+                        <div class="campanylogo-address">
+                            <img src="@Url.Content(Model.AllCashandCarrys[i].ImgUrl)" border="0" alt="company1" />
+                            <div class="address">@Model.AllCashandCarrys[i].Name</div>
+                        </div>
+                        <div class="distance floatright">
+                        
+                            <div class="offer">
+                                 <a href="javascript:void(0);" shop-id="@Model.AllCashandCarrys[i].ID" shop-name="@Model.AllCashandCarrys[i].Name" onclick=" redirectLocalShopPublicSearch(this); ">View Offer</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="companyname" style="width: 556px;">
+                        <div class="campanylogo-address">
+                            <img src="@Url.Content(Model.AllCashandCarrys[i].ImgUrl)" border="0" alt="company1" />
+                            <div class="address">@Model.AllCashandCarrys[i].Name</div>
+                        </div>
+                        <div class="distance floatright">
+                            <div class="offer">
+                                <a href="javascript:void(0);" shop-id="@Model.AllCashandCarrys[i].ID" shop-name="@Model.AllCashandCarrys[i].Name" onclick=" redirectLocalShopPublicSearch(this); ">View Offer</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            
+                      
+        </div>
+    </div>
+}

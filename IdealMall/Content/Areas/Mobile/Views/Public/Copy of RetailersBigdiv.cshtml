@@ -1,0 +1,119 @@
+﻿@model IdealMall.Entities.LocalShopsOffers
+@{
+    Layout = null;
+}
+<script type="text/javascript">
+    //arulv1
+    $(document).ready(
+function () {
+    totalpages = '@ViewBag.pages';
+}
+);
+</script>
+@{
+    
+    
+   
+        for (int i = 0; i < Model.Offers.Count; i++)
+        {
+            <div>
+                                <img  style="padding-left:5px" alt="@Model.Offers[i].Shop.Name" src="@Url.Content(Model.Offers[i].Shop.ImgUrl)" />
+                                <span style="font-family: 'Bauhaus 93'; font-size: 1.5em; color: #D99694; padding-left: 5px;">@Model.Offers[i].Shop.Name</span>
+                            
+                        
+                                <span data-role="product" style="font-family: 'Meiryo UI'; font-size: 14px; font-weight: bold;">@Model.Offers[i].Product</span>
+                           
+                                <span style="font-family: 'Meiryo UI'; font-size: 12px;">Volume: @Model.Offers[i].Volume</span>
+                            
+                                <img  src="@Url.Content(Model.Offers[i].ImageURL)" alt="@Model.Offers[i].Product"/>
+                            
+                        @if (Model.Offers[i].Sell_Price != "0.00")
+                        {
+string strSellPrice = string.Empty;
+                          if (Convert.ToDecimal(Model.Offers[i].Sell_Price) < 1)
+                          {
+                              strSellPrice = (Convert.ToDecimal(Model.Offers[i].Sell_Price) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                          }
+                          else
+                          {
+                              strSellPrice = "£ " + Model.Offers[i].Sell_Price;
+                          }
+                            
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Sell At  @strSellPrice each</span>
+                                
+                        }
+                       
+                        @if (Model.Offers[i].POR != 0)
+                        {
+                            
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">POR: @Model.Offers[i].POR
+                                        %</span>
+                                
+                        }
+                       
+                         @if (Model.Offers[i].OfferRate != 0)
+                        {
+                            string offerPrice = string.Empty;
+                            if (Convert.ToDecimal(Model.Offers[i].OfferRate) < 1)
+                            {
+                                offerPrice = (Convert.ToDecimal(Model.Offers[i].OfferRate) * 100).ToString().TrimEnd('0').TrimEnd('.') + "p";
+                            }
+                            else
+                            {
+                                offerPrice = "£ " + Model.Offers[i].OfferRate;
+                            }
+                            
+                                    <span style="font-family: 'Meiryo UI'; font-size: 13px; font-weight: bold; color: #C86301">
+                                        Offer Price: @offerPrice
+                                    </span>
+                                
+                        }
+                       
+                        @if (Model.Offers[i].Additional_offer != string.Empty && Model.Offers[i].Additional_offer != null)
+                        {
+                           
+                                    <span class="buyFreeStyle">@Model.Offers[i].Additional_offer</span>
+                                 
+                        }
+                        
+                        
+                        @if (Model.Offers[i].OfferEnddate != string.Empty)
+                        {
+                            
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px; color: #C86301; font-weight:bold">Offer valid
+                                        until: @Model.Offers[i].OfferEnddate
+                                    </span>
+                               
+                        }
+                        
+                        
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <span style="font-family: 'Meiryo UI'; font-size: 12px;">Quantity: </span>
+                                    <input title="Qty" onload="this.focus();" maxlength="" data-role="Qty" value="1"
+                                        placeholder="" style="width: 50px; height: 20px; padding-right: 10px; text-align: left;" /></div>
+                               
+                           
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <a class="restsStatusOpen" onmousedown="shoppingAddKeyDown(this);" title="Add to Shopping" onclick="AddToShoppingList(this)"
+                                        style="width: 150px">Add to Shopping </a>
+                                    <input type="hidden" data-role="shopid" value="@Model.Offers[i].Shop.ID" />
+                                    <input type="hidden"  data-role="vat" value="@Model.Offers[i].VAT" />
+                                    <input type="hidden" data-role="offerrate" value="@Model.Offers[i].OfferRate" />
+                                    <input type="hidden"  data-role="volume" value="@Model.Offers[i].Volume" />
+                                </div>
+                            
+                                <div style="margin: 0 auto; float: left; display: inline;">
+                                    <a class=" restsStatusOpen" style="width:150px"  
+                                            title="Compare Price" 
+                                            product-name="@Model.Offers[i].Product"
+                                            product-url ="@(Model.Offers[i].ImageURL)"
+                                            post-code ="@Model.Offers[i].PostCode"
+                                            onclick="openPriceCompare(this);" >
+                                        <b>Compare Price </b></a>
+                                </div>
+                            
+               </div>
+                }
+        
+
+}
