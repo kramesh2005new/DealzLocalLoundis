@@ -474,6 +474,7 @@ namespace IdealMall.Controllers
                         return Json("-1");
                     }
                     item.UserId = Session["PublicUserName"].ToString();
+                    item.ProductId = PublicBA.GetProductId(item.Product, item.Volume);
                     var totalcount = PublicBA.AddToShoppingList(item);
                     ViewBag.PublicUserName = Session["PublicUserName"].ToString();
                     ViewBag.ShoppingCount = totalcount;

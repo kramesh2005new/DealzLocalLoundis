@@ -52,6 +52,7 @@ namespace IdealMall.Entities
         public string UserId { get; set; }
         public Int32 Shop_ID { get; set; }
         public float Offer_Rate { get; set; }
+        public Int32 ProductId { get; set; }
         public string Product { get; set; }
         public int Qty { get; set; }
         public float VAT { get; set; }

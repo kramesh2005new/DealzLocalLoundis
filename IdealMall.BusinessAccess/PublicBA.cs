@@ -94,6 +94,17 @@ namespace IdealMall.BusinessAccess
             return PublicDA.AddToShoppingList(item);
         }
 
+        public static Int32 GetProductId(string productName, string volume)
+        {
+            int productid = 0;
+
+
+            productid = PublicDA.GetProductId(productName, volume);
+
+            return productid;
+
+        }
+
         public static string IsValidPublicUser(PublicUser publicUser)
         {
             return PublicDA.IsValidPublicUser(publicUser);

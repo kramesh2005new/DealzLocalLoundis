@@ -34,6 +34,12 @@ namespace IdealMall.DataAccess
 
         }
 
+        public static Int32 GetProductId(string productName, string volume)
+        {
+            return new DynamicORM().GetEntity<Int32>("Get_ProductId", new { Product = productName, Volume = volume });
+
+        }
+
         public static List<string> GetSuggestion(string searchText)
         {
             return new DynamicORM().GetEntity<List<string>>("Get_SearchSuggession_Public", new { Product = searchText });
